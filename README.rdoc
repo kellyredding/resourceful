@@ -12,7 +12,7 @@ The supported formats are:
 
 == Installation
 
-    sudo gem install resourceful
+    sudo gem install kelredd-resourceful --source http://gems.github.com
     
 == Dependencies
 

@@ -2,6 +2,7 @@ require 'rest_client'
 require 'log4r'
 require File.join(File.dirname(__FILE__), 'cache.rb')
 require File.join(File.dirname(__FILE__), 'format.rb')
+require File.join(File.dirname(__FILE__), '..', 'exceptions.rb')
 
 module Resourceful
   module Resource
@@ -55,7 +56,8 @@ module Resourceful
       end
       
       def self.check_config
-        
+        raise Resourceful::Exceptions::ConfigurationError, "please configure a server for Resourceful resources" unless @@server
+        raise Resourceful::Exceptions::ConfigurationError, "please configure a valid Resourceful format" unless @@format
       end
       
       def self.log(msg, level = :info) # :nodoc:
