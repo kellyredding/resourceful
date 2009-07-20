@@ -22,6 +22,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('nokogiri')
   s.add_dependency('json')
   s.add_dependency('rest_client')
+  s.add_dependency('log4r')
   s.add_dependency('kelredd-useful')
 end
 

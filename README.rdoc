@@ -2,7 +2,13 @@
 
 == Description
 
-A ruby gem to abstract web resource handling.
+A ruby gem to abstract web resource handling.  You configure the server, resource format, etc... and
+the gem will provide interactions with that resource in a restful manner, with data returned in a 
+de-serialized object format.
+
+The supported formats are:
+ * JSON (objects returned as Ruby Hash)
+ * XML (objects returned as Nokogiri Xml object)
 
 == Installation
 
@@ -13,11 +19,18 @@ A ruby gem to abstract web resource handling.
  * nokogiri (xml resource format handling)
  * json (json resource format handling)
  * rest_client (rest web resource access)
+ * log4r (for resource interaction logging)
  * kelredd-useful (some nice ruby helpers)
 
 == Usage
 
+    # Global resource class level handling
     require 'resourceful'
+    Resourceful::Resource.configure :server => 'localhost:3000', :format => 'json'
+    Resourceful::Resource::Cache.clear
+    Resourceful::Resource.get '/widgets'
+    
+    # TODO: allow Resource Base extension to have configurations on a per resource basis
 
 == License
 
