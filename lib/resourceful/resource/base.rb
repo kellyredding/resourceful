@@ -32,16 +32,16 @@ module Resourceful
       end
 
       # KDR: returns the resource specified in hash form
-      def self.get(resource, opts={}, force=false)
-        opts = check_config(opts)
+      def self.get(path, opts={}, force=false)
+        path, opts = check_config(path, opts)
         @@rest_client ||= ::RestClient::Resource.new("http://#{@@host}")
         format = Resourceful::Resource::Format.get(opts[:format])
-        request_summary = summary('get', resource, format, opts[:params])
-        cache = Resourceful::Resource::Cache.new(@@host, 'get', resource, format, opts[:params])
+        request_summary = summary('get', path, format, opts[:params])
+        cache = Resourceful::Resource::Cache.new(@@host, 'get', path, format, opts[:params])
 
         if force || (resp = cache.read).nil?
           log "Resource call: #{request_summary}"
-          resp = cache.write(@@rest_client[path(resource, format, opts[:params])].get)
+          resp = cache.write(@@rest_client[rest_path(path, format, opts[:params])].get)
         else
           log "Resource call: [CACHE] #{request_summary}"
         end
@@ -50,19 +50,23 @@ module Resourceful
 
       private
 
-      def self.summary(verb, resource, format, params) # :nodoc:
-        "#{verb.upcase} #{@@rest_client.url}#{path(resource, format, params)}"
+      def self.summary(verb, path, format, params) # :nodoc:
+        "#{verb.upcase} #{@@rest_client.url}#{rest_path(path, format, params)}"
       end
       
-      def self.path(resource, format, params) # :nodoc:
-        "#{resource}.#{format}#{params.to_http_query_str unless params.empty?}"
+      def self.rest_path(path, format, params) # :nodoc:
+        "#{path}.#{format}#{params.to_http_query_str unless params.empty?}"
       end
 
-      def self.check_config(opts)
+      def self.check_config(path, opts)
         raise Resourceful::Exceptions::ConfigurationError, "please configure a host for Resourceful resources" unless @@host
+        if path =~ /^(.+)\.(.+)$/
+          path = $1
+          opts[:format] ||= $2
+        end
         opts[:format] ||= Resourceful::Resource::Json.to_s
         opts[:params] ||= {}
-        opts
+        [path, opts]
       end
       
       def self.log(msg, level = :info) # :nodoc:

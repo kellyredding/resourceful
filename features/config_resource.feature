@@ -25,5 +25,5 @@ Feature: Config Resource
 
   Scenario: Resource logging
     Given I have a configured resource host set to log
-    When I get a json resource
+    When I get a json formatted resource
     Then the set log file should exist
