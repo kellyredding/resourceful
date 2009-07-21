@@ -4,5 +4,8 @@ module Resourceful
     class ConfigurationError < ::StandardError
     end
     
+    class FormatError < ::StandardError
+    end
+    
   end
 end

@@ -3,8 +3,7 @@ $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
 require 'test/unit'
-require 'matchy'
-require 'context'
-require 'mocha'
+require 'shoulda'
 
 require File.dirname(__FILE__) + '/../lib/resourceful'
+

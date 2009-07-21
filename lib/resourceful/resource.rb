@@ -9,8 +9,16 @@ module Resourceful
       Resourceful::Resource::Base.configure(opts, &block)
     end
 
-    def self.get(resource, args={}, force=false)
-      Resourceful::Resource::Base.get(resource, args, force)
+    def self.get(resource, opts={}, force=false)
+      Resourceful::Resource::Base.get(resource, opts, force)
+    end
+
+    def self.host
+      Resourceful::Resource::Base.host
+    end
+
+    def self.logger
+      Resourceful::Resource::Base.logger
     end
 
   end

@@ -5,6 +5,13 @@ module Resourceful
   module Resource
     class Format
       
+      SUPPORTED = ['json', 'xml']
+      
+      def self.get(format)
+        raise Resourceful::Exceptions::FormatError, "the format '#{format}' is not supported" unless SUPPORTED.include?(format.to_s)
+        self.send(format)
+      end
+      
       def self.json
         Resourceful::Resource::Json
       end

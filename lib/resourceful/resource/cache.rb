@@ -20,14 +20,14 @@ module Resourceful
         @@cache[key] = value
       end
 
-      def self.key(server, verb, resource, args)
-        "#{server}_#{verb}_#{resource}_#{args.to_s}"
+      def self.key(server, verb, resource, format, params)
+        "#{server}_#{verb}_#{resource}_#{format.to_s}_#{params.to_s}"
       end
       
       attr_reader :key
       
-      def initialize(server, verb, resource, args)
-        @key = self.class.key(server, verb, resource, args)
+      def initialize(server, verb, resource, format, params)
+        @key = self.class.key(server, verb, resource, format, params)
       end
       
       def read
