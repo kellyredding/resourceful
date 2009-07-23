@@ -1,10 +1,7 @@
-require 'rubygems'
-require 'nokogiri'
-require 'json'
-require 'rest_client'
-require 'log4r'
-require 'useful/ruby_extensions'
+%w(rubygems nokogiri json rest_client log4r).each do |lib|
+  require lib
+end
 
-require File.join(File.dirname(__FILE__), 'resourceful', 'exceptions.rb')
-require File.join(File.dirname(__FILE__), 'resourceful', 'resource.rb')
-#require File.join(File.dirname(__FILE__), 'resourceful', 'resource.rb')
+%w(exceptions extensions resource model).each do |file|
+  require File.join(File.dirname(__FILE__), 'resourceful', "#{file}.rb")
+end
