@@ -39,7 +39,7 @@ module Resourceful
           'to_s'
         end
         define_method(name) do
-          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", attribute(config).send(content_method))
+          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", (a = attribute(config)).kind_of?(String) ? a.send(content_method) : a)
         end
       end
 

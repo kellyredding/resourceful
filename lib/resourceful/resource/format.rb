@@ -41,7 +41,7 @@ module Resourceful
       end
         
       def self.build(json_str)
-        Hash.from_json(json_str.to_s)
+        JSON.parse(json_str.to_s)
       end
         
     end
