@@ -33,11 +33,13 @@ module Resourceful
           'to_date'
         when :datetime
           'to_datetime'
+        when :boolean
+          'to_boolean'
         else 
           'to_s'
         end
         define_method(name) do
-          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", (yield).send(content_method))
+          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", attribute(config).send(content_method))
         end
       end
 

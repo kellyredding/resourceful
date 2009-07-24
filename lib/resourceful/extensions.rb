@@ -12,12 +12,19 @@ module Resourceful
 
       unless "".respond_to?(:to_datetime) 
         def to_datetime
-          DateTime.strptime(self) rescue nil
+          ::DateTime.civil(*::Date._parse(self, false).values_at(:year, :mon, :mday, :hour, :min, :sec).map { |arg| arg || 0 }) rescue nil
         end
       end
+
       unless "".respond_to?(:to_datetime) 
         def to_date
-          Date.strptime(self) rescue nil
+          ::Date.civil(*::Date._parse(self, false).values_at(:year, :mon, :mday).map { |arg| arg || 0 }) rescue nil
+        end
+      end
+      
+      unless "".respond_to?(:to_boolean) 
+        def to_boolean
+          self =~ /^(true|1)$/i ? true : false
         end
       end
       

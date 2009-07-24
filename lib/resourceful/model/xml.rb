@@ -1,7 +1,7 @@
 module Resourceful
   module Model
 
-    class Xml
+    class Xml < Resourceful::Model::Base
       
       attr_reader :xml
 
@@ -24,12 +24,17 @@ module Resourceful
       
       protected
       
-      def self.attribute(name, type, config)
-        raise Resourceful::AttributeError, "no path provided for selecting the attribute '#{name}'." unless config[:path]
-        super(name, type, config) do
-          get_node("./#{config[:path]}").content
-        end
+      def self.attribute(name, type, config={})
+        config[:path] ||= name
+        super(name, type, config)
       end
+      
+      def attribute(config)
+        node = get_node("./#{config[:path]}")
+        raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" unless node
+        node.content
+      end
+        
       def self.get_node(xml, path)
         xml.xpath(path.to_s).first
       end

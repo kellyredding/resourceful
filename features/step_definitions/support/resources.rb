@@ -17,3 +17,4 @@ Given /^I have a configured resource host set to log$/ do
     RESOURCE_CONFIG[:log]
   }
 end
+
