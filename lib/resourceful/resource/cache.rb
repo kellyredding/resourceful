@@ -2,44 +2,30 @@ module Resourceful
   module Resource
     class Cache
 
-      @@cache = {}
+      attr_reader :store
+      
+      def self.key(host, verb, resource)
+        "#{host}_#{verb}_#{resource}"
+      end
 
-      def self.clear(key=nil)
+      def initialize
+        @store = {}
+      end
+
+      def clear(key=nil)
         if key
-          @@cache[key] = nil
+          @store[key] = nil
         else
-          @@cache = {}
+          @store = {}
         end
       end
       
-      def self.read(key)
-        @@cache[key]
+      def read(key)
+        @store[key]
       end
       
-      def self.write(key, value)
-        @@cache[key] = value
-      end
-
-      def self.key(server, verb, path, format, params)
-        "#{server}_#{verb}_#{path}_#{format.to_s}_#{params.to_s}"
-      end
-      
-      attr_reader :key
-      
-      def initialize(server, verb, path, format, params)
-        @key = self.class.key(server, verb, path, format, params)
-      end
-      
-      def read
-        self.class.read(@key)
-      end
-      
-      def write(value)
-        self.class.write(@key, value)
-      end
-      
-      def clear
-        self.class.clear(@key)
+      def write(key, value)
+        @store[key] = value
       end
 
     end

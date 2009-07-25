@@ -1,7 +1,7 @@
-Feature: Resource Models
+Feature:  Models
   In order to consume rest based resources
   As an object
-  I want to define and initialize a model class from xml resource data
+  I want to define and initialize a model class from resource data
   
   Scenario: Get JSON user
     Given I have a configured resource host
