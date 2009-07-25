@@ -3,17 +3,17 @@ Given /^I want to use the (.+) resource format$/ do |format|
 end
 
 Given /^I have no host server configured$/ do
-  @resource = Resourceful::Resource::RestClient.new
+  @agent = Resourceful::Agent::RestClient.new
 end
 
 Given /^I have a configured resource host$/ do
-  @resource = Resourceful::Resource::RestClient.new(:host => RESOURCE_CONFIG[:host])
+  @agent = Resourceful::Agent::RestClient.new(:host => RESOURCE_CONFIG[:host])
 end
 
 Given /^I have a configured resource host set to log$/ do
   log_file = File.expand_path(RESOURCE_CONFIG[:log])
   FileUtils.rm(log_file) if File.exists?(log_file)
-  @resource = Resourceful::Resource::RestClient.new(:host => RESOURCE_CONFIG[:host]) {
+  @agent = Resourceful::Agent::RestClient.new(:host => RESOURCE_CONFIG[:host]) {
     RESOURCE_CONFIG[:log]
   }
 end
@@ -23,17 +23,17 @@ Then /^the format should be \.(.+)$/ do |format|
 end
 
 Then /^the host should be set$/ do
-  assert_equal @resource.host, RESOURCE_CONFIG[:host]
+  assert_equal @agent.host, RESOURCE_CONFIG[:host]
 end
 
 Then /^resourceful should complain about a configuration error$/ do
   assert_raise Resourceful::Exceptions::ConfigurationError do
-    @resource.get RESOURCE_CONFIG[:resource], :format => 'json', :params => RESOURCE_CONFIG[:params]
+    @agent.get RESOURCE_CONFIG[:resource], :format => 'json', :params => RESOURCE_CONFIG[:params]
   end
 end
 
 Then /^verify the log settings$/ do
-  assert_equal @resource.logger.outputters.detect{|out| out.respond_to?('filename')}.filename, RESOURCE_CONFIG[:log]
+  assert_equal @agent.logger.outputters.detect{|out| out.respond_to?('filename')}.filename, RESOURCE_CONFIG[:log]
 end
 
 Then /^the set log file should exist$/ do
@@ -47,19 +47,19 @@ end
 
 When /^I get a[n]* (.+) formatted resource$/ do |format|
   @result = ResourcefulFeature::Helpers.safe_run_get do
-    @resource.get RESOURCE_CONFIG[:resource], :format => format, :params => RESOURCE_CONFIG[:params]
+    @agent.get RESOURCE_CONFIG[:resource], :format => format, :params => RESOURCE_CONFIG[:params]
   end
 end
 
 When /^I get a[n]* (.+) formatted implicitly resource$/ do |format|
   @result = ResourcefulFeature::Helpers.safe_run_get do
-    @resource.get RESOURCE_CONFIG[:resource]+".#{format}", :params => RESOURCE_CONFIG[:params]
+    @agent.get RESOURCE_CONFIG[:resource]+".#{format}", :params => RESOURCE_CONFIG[:params]
   end
 end
 
 When /^I get a resource that does not exist$/ do
   @result = ResourcefulFeature::Helpers.safe_run_get do
-    @resource.get '/unknown', :format => 'xml', :params => RESOURCE_CONFIG[:params]
+    @agent.get '/unknown', :format => 'xml', :params => RESOURCE_CONFIG[:params]
   end
 end
 

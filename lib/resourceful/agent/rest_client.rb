@@ -1,10 +1,10 @@
 require 'rest_client'
-require File.join(File.dirname(__FILE__), 'format.rb')
+require File.join(File.dirname(__FILE__), '..', 'resource', 'format.rb')
 require File.join(File.dirname(__FILE__), 'base.rb')
 
 module Resourceful
-  module Resource
-    class RestClient < Resourceful::Resource::Base
+  module Agent
+    class RestClient < Resourceful::Agent::Base
       
       ATTRS = [:host, :user, :password]
       ATTRS.each { |a| attr_reader a }

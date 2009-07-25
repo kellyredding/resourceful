@@ -1,8 +1,8 @@
 require 'log4r'
-require File.join(File.dirname(__FILE__), 'cache.rb')
+require File.join(File.dirname(__FILE__), '..', 'resource', 'cache.rb')
 
 module Resourceful
-  module Resource
+  module Agent
     class Base
       
       attr_reader :logger, :cache
