@@ -9,10 +9,10 @@ module Resourceful
         Resourceful::Resource
       end
       
-      def self.find(path, opts={}, force=false)
+      def self.get(path, opts={}, force=false)
         resource.get(path, opts, force)
       end
-      def self.find_collection(path, opts={}, force=false)
+      def self.get_collection(path, opts={}, force=false)
         (yield resource.get(path, opts, force)).collect{|data| new(data)}
       end
 
@@ -39,7 +39,7 @@ module Resourceful
           'to_s'
         end
         define_method(name) do
-          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", (a = attribute(config)).kind_of?(String) ? a.send(content_method) : a)
+          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", ((a = attribute(config)) && a.kind_of?(String)) ? a.send(content_method) : a)
         end
       end
 

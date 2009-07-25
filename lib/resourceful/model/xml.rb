@@ -5,14 +5,18 @@ module Resourceful
       
       attr_reader :xml
 
-      def self.find(path, params, xpath, force=false)
+      def self.get(path, params, xpath, force=false)
         opts = {
           :format => 'xml',
           :params => params || {}
         }
         new(super(path, opts, force).xpath(xpath))
       end
-      def self.find_collection(path, params, xpath, force=false)
+      def self.get_collection(path, params, xpath, force=false)
+        opts = {
+          :format => 'xml',
+          :params => params || {}
+        }
         super(path, opts, force) do |data|
           data.xpath(xpath)
         end
@@ -31,8 +35,8 @@ module Resourceful
       
       def attribute(config)
         node = get_node("./#{config[:path]}")
-        raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" unless node
-        node.content
+        #raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" unless node
+        node.content rescue nil
       end
         
       def self.get_node(xml, path)

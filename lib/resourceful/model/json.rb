@@ -5,14 +5,18 @@ module Resourceful
       
       attr_reader :json
 
-      def self.find(path, params, force=false)
+      def self.get(path, params, force=false)
         opts = {
           :format => 'json',
           :params => params || {}
         }
         new(super(path, opts, force))
       end
-      def self.find_collection(path, params, force=false)
+      def self.get_collection(path, params, force=false)
+        opts = {
+          :format => 'json',
+          :params => params || {}
+        }
         super(path, opts, force) do |data|
           data
         end
@@ -32,7 +36,7 @@ module Resourceful
       def attribute(config)
         paths = config[:path].to_s.split('/')
         paths.inject(@json) do |val,path|
-          raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" if val.nil?
+          #raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" if val.nil?
           val.fetch(path, nil) rescue nil
         end
       end
