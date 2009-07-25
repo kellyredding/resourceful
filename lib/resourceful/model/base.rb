@@ -3,17 +3,16 @@ module Resourceful
 
     class Base
       
-      # KDR: override this to have a per model Resource handler
-      # => TODO: need to support creating resource instances first though
-      def self.resource
-        Resourceful::Resource
+      @@agent = nil
+      def self.agent(a)
+        @@agent = a
       end
       
-      def self.get(path, opts={}, force=false)
-        resource.get(path, opts, force)
+      def self.get(path, opts={})
+        @@agent.get(path, opts)
       end
-      def self.get_collection(path, opts={}, force=false)
-        (yield resource.get(path, opts, force)).collect{|data| new(data)}
+      def self.get_collection(path, opts={})
+        (yield @@agent.get(path, opts)).collect{|data| new(data)}
       end
 
       def initialize(data)

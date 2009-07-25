@@ -8,16 +8,18 @@ module Resourceful
       def self.get(path, params, xpath, force=false)
         opts = {
           :format => 'xml',
-          :params => params || {}
+          :params => params || {},
+          :force => force
         }
-        new(super(path, opts, force).xpath(xpath))
+        new(super(path, opts).xpath(xpath))
       end
       def self.get_collection(path, params, xpath, force=false)
         opts = {
           :format => 'xml',
-          :params => params || {}
+          :params => params || {},
+          :force => force
         }
-        super(path, opts, force) do |data|
+        super(path, opts) do |data|
           data.xpath(xpath)
         end
       end
@@ -35,7 +37,6 @@ module Resourceful
       
       def attribute(config)
         node = get_node("./#{config[:path]}")
-        #raise Resourceful::Exceptions::AttributeError, "no matching attribute data for'#{config[:path]}'" unless node
         node.content rescue nil
       end
         

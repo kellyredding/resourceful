@@ -9,3 +9,6 @@ RESOURCE_CONFIG = {
 }
 
 require File.dirname(__FILE__) + '/../../../lib/resourceful'
+
+REST_CLIENT_TWITTER = Resourceful::Agent::RestClient.new(:host => RESOURCE_CONFIG[:host])
+
