@@ -19,6 +19,8 @@ class UserXml < Resourceful::Model::Xml
   attribute :created_on, :date, :path => 'created_at'
   attribute :last_status_at, :datetime, :path => "status/created_at"
   attribute :last_status, :string, :path => "status/text"
+  
+ has_one :last_status, :path => "status", :klass => "StatusXml"
 
 end
 
@@ -43,6 +45,8 @@ class UserJson < Resourceful::Model::Json
   attribute :created_on, :date, :path => 'created_at'
   attribute :last_status_at, :datetime, :path => "status/created_at"
   attribute :last_status, :string, :path => "status/text"
+  
+  has_one :last_status, :path => "status", :klass => "StatusJson"
 
 end
 
@@ -88,10 +92,10 @@ class StatusJson < Resourceful::Model::Json
   attribute :reply_status, :integer, :path => 'in_reply_to_status_id'
   attribute :reply_user, :integer, :path => 'in_reply_to_user_id'
   attribute :user_id, :integer, :path => "user/id"
-  attribute :user_screen_name, :integer, :path => "user/screen_name"
+  attribute :user_screen_name, :string, :path => "user/screen_name"
 
   def user
-    @user ||= UserXml.find(self.user_screen_name)
+    @user ||= UserJson.find(self.user_screen_name)
   end
 
 end

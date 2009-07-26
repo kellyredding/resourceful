@@ -21,6 +21,8 @@ module Resourceful
       protected
       
       def self.attribute(name, type, config)
+        config ||= {}
+        config[:path] ||= name
         content_method = case type.to_sym
         when :string
           'to_s'
@@ -39,6 +41,14 @@ module Resourceful
         end
         define_method(name) do
           instance_variable_get("@#{name}") || instance_variable_set("@#{name}", ((a = attribute(config)) && a.kind_of?(String)) ? a.send(content_method) : a)
+        end
+      end
+
+      def self.has_one(name, config)
+        config ||= {}
+        config[:path] ||= name
+        define_method(name) do
+          instance_variable_get("@#{name}") || instance_variable_set("@#{name}", (c = child(config)) ? (config[:klass].constantize.new(c) rescue c) : c)
         end
       end
 

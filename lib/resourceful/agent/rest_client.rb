@@ -1,5 +1,4 @@
 require 'rest_client'
-require File.join(File.dirname(__FILE__), '..', 'resource', 'format.rb')
 require File.join(File.dirname(__FILE__), 'base.rb')
 
 module Resourceful

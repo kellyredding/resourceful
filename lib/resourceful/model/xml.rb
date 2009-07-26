@@ -25,33 +25,48 @@ module Resourceful
       end
 
       def initialize(xml)
-        @xml = xml
+        raise Resourceful::Exceptions::ModelError, "trying to initialize a Resourceful::Model::Xml model with '#{xml.class.name}' data" unless xml.kind_of?(Nokogiri::XML::NodeSet) || xml.kind_of?(Nokogiri::XML::Element)
+        @data = xml
       end
       
       protected
       
       def self.attribute(name, type, config={})
-        config[:path] ||= name
         super(name, type, config)
       end
       
       def attribute(config)
-        node = get_node("./#{config[:path]}")
-        node.content rescue nil
+        begin
+          get_node("./#{config[:path]}").content
+        rescue Exception => err
+          nil
+        end          
+      end
+        
+      def self.has_one(name, config={})
+        super(name, config)
+      end
+      
+      def child(config)
+        begin
+          get_node("./#{config[:path]}")
+        rescue Exception => err
+          nil
+        end
       end
         
       def self.get_node(xml, path)
         xml.xpath(path.to_s).first
       end
       def get_node(path)
-        self.class.get_node(@xml, path)
+        self.class.get_node(@data, path)
       end
 
       def self.xml_root_name(xml)
         xml.root.name
       end
       def xml_root_name
-        self.class.xml_root_name(@xml)
+        self.class.xml_root_name(@data)
       end
 
     end

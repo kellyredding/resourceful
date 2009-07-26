@@ -3,17 +3,11 @@ Given /^I am user with the screen_name "([^\"]*)"$/ do |screen_name|
 end
 
 When /^I load my "([^\"]*)" user model$/ do |klass|
-  name = "User#{klass}"
-  constant = ::Object
-  model_klass = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-  @result = model_klass.find(@screen_name)
+  @result = "User#{klass}".constantize.find(@screen_name)
 end
 
 When /^I load the "([^\"]*)" status "([^\"]*)"$/ do |klass, collection|
-  name = "Status#{klass}"
-  constant = ::Object
-  model_klass = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-  @result = model_klass.find(collection)
+  @result = "Status#{klass}".constantize.find(collection)
 end
 
 Then /^the result should be a valid User model$/ do
@@ -32,6 +26,7 @@ Then /^the result should be a valid User model$/ do
   assert_kind_of DateTime, @result.last_status_at
   assert !@result.last_status.nil?
   assert @result.last_status != ''
+  assert_kind_of Resourceful::Model::Base, @result.last_status
 end
 
 Then /^the result should be a collection of valid Status models$/ do
