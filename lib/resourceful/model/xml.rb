@@ -31,10 +31,6 @@ module Resourceful
       
       protected
       
-      def self.attribute(name, type, config={})
-        super(name, type, config)
-      end
-      
       def attribute(config)
         begin
           get_node("./#{config[:path]}").content
@@ -43,10 +39,6 @@ module Resourceful
         end          
       end
         
-      def self.has_one(name, config={})
-        super(name, config)
-      end
-      
       def child(config)
         begin
           get_node("./#{config[:path]}")
