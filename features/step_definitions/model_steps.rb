@@ -26,24 +26,38 @@ Then /^the result should be a valid User model$/ do
   assert_kind_of DateTime, @result.last_status_at
   assert !@result.last_status.nil?
   assert @result.last_status != ''
+  
   assert_kind_of Resourceful::Model::Base, @result.last_status
+  assert_valid_status(@result.last_status)
 end
 
 Then /^the result should be a collection of valid Status models$/ do
   assert_kind_of Array, @result
   assert_equal 20, @result.length
+  assert_valid_status(@result.first)
 
-  [:id, :text, :source, :truncated, :favorited, :reply_status, :reply_user, :user_id, :user_screen_name, :user].each do |attribute|
+  [:user_id, :user_screen_name, :user].each do |attribute|
     assert @result.first.respond_to?(attribute)
     assert_nothing_raised do
       @result.first.send(attribute.to_s)
     end
   end
-  
-  [:id, :text, :truncated, :favorited, :user_id, :user_screen_name, :user].each do |attribute|
+  [:user_id, :user_screen_name, :user].each do |attribute|
     assert !@result.first.send(attribute.to_s).nil?
   end
-  
   assert_kind_of Resourceful::Model::Base, @result.first.user  
+end
+
+def assert_valid_status(status)
+  [:id, :text, :source, :truncated, :favorited, :reply_status, :reply_user].each do |attribute|
+    assert status.respond_to?(attribute)
+    assert_nothing_raised do
+      status.send(attribute.to_s)
+    end
+  end
+  
+  [:id, :text, :truncated, :favorited].each do |attribute|
+    assert !status.send(attribute.to_s).nil?
+  end
   
 end
