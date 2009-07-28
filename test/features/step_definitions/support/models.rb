@@ -1,6 +1,8 @@
 class UserXml < Resourceful::Model::Xml
   
-  agent REST_CLIENT_TWITTER
+  agent do 
+    REST_CLIENT_TWITTER
+  end
   
   def self.find(screen_name, force=false)
     get("/users/#{screen_name}", {}, "//user")
@@ -26,7 +28,9 @@ end
 
 class UserJson < Resourceful::Model::Json
   
-  agent REST_CLIENT_TWITTER
+  agent do 
+    REST_CLIENT_TWITTER
+  end
   
   def self.find(screen_name, force=false)
     get("/users/#{screen_name}", {})
@@ -52,7 +56,9 @@ end
 
 class StatusXml < Resourceful::Model::Xml
   
-  agent REST_CLIENT_TWITTER
+  agent do 
+    REST_CLIENT_TWITTER
+  end
   
   def self.find(collection, force=false)
     get_collection("/statuses/#{collection}", {}, "//statuses/status")
@@ -75,7 +81,9 @@ end
 
 class StatusJson < Resourceful::Model::Json
   
-  agent REST_CLIENT_TWITTER
+  agent do 
+    REST_CLIENT_TWITTER
+  end
   
   def self.find(collection, force=false)
     get_collection("/statuses/#{collection}", {})

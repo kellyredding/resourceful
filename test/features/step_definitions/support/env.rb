@@ -8,7 +8,7 @@ RESOURCE_CONFIG = {
   :log => "./test.log"
 }
 
-require File.dirname(__FILE__) + '/../../../lib/resourceful'
+require File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'lib', 'resourceful')
 
 REST_CLIENT_TWITTER = Resourceful::Agent::RestClient.new(:host => RESOURCE_CONFIG[:host])
 

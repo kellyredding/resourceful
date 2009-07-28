@@ -4,15 +4,15 @@ module Resourceful
     class Base
       
       @@agent = nil
-      def self.agent(a)
-        @@agent = a
+      def self.agent(&block)
+        @@agent = block;
       end
       
       def self.get(path, opts={})
-        @@agent.get(path, opts)
+        set_agent.get(path, opts)
       end
       def self.get_collection(path, opts={})
-        (yield @@agent.get(path, opts)).collect{|data| new(data)}
+        (yield set_agent.get(path, opts)).collect{|data| new(data)}
       end
 
       def initialize(data)
@@ -96,6 +96,15 @@ module Resourceful
               end
             )
         end
+      end
+      
+      private
+      
+      def self.set_agent
+        unless @@agent.kind_of?(Resourceful::Agent::Base)
+          @@agent = @@agent.call 
+        end
+        @@agent
       end
 
     end
