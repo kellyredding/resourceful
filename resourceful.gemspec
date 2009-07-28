@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resourceful}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kelly Redding"]
-  s.date = %q{2009-07-26}
+  s.date = %q{2009-07-27}
   s.email = %q{kelly@kelredd.com}
   s.extra_rdoc_files = ["README.rdoc"]
-  s.files = ["README.rdoc", "Rakefile", "features/models.feature", "features/rest_client.feature", "features/step_definitions", "features/step_definitions/model_steps.rb", "features/step_definitions/rest_client_steps.rb", "features/step_definitions/support", "features/step_definitions/support/env.rb", "features/step_definitions/support/helpers.rb", "features/step_definitions/support/models.rb", "lib/resourceful", "lib/resourceful/agent", "lib/resourceful/agent/base.rb", "lib/resourceful/agent/rest_client.rb", "lib/resourceful/agent.rb", "lib/resourceful/exceptions.rb", "lib/resourceful/extensions.rb", "lib/resourceful/model", "lib/resourceful/model/base.rb", "lib/resourceful/model/json.rb", "lib/resourceful/model/xml.rb", "lib/resourceful/model.rb", "lib/resourceful/resource", "lib/resourceful/resource/cache.rb", "lib/resourceful/resource/format.rb", "lib/resourceful/resource.rb", "lib/resourceful/version.rb", "lib/resourceful.rb", "test/test_helper.rb"]
+  s.files = ["README.rdoc", "Rakefile", "lib/resourceful", "lib/resourceful/agent", "lib/resourceful/agent/base.rb", "lib/resourceful/agent/rest_client.rb", "lib/resourceful/agent.rb", "lib/resourceful/exceptions.rb", "lib/resourceful/extensions.rb", "lib/resourceful/model", "lib/resourceful/model/base.rb", "lib/resourceful/model/json.rb", "lib/resourceful/model/xml.rb", "lib/resourceful/model.rb", "lib/resourceful/resource", "lib/resourceful/resource/cache.rb", "lib/resourceful/resource/format.rb", "lib/resourceful/resource.rb", "lib/resourceful/version.rb", "lib/resourceful.rb"]
   s.has_rdoc = true
   s.homepage = %q{}
   s.rdoc_options = ["--main", "README.rdoc"]

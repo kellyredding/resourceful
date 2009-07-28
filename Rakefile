@@ -16,7 +16,7 @@ spec = Gem::Specification.new do |s|
   s.author           = 'Kelly Redding'
   s.email            = 'kelly@kelredd.com'
   s.homepage         = ''
-  s.files            = %w(README.rdoc Rakefile) + Dir.glob("{features,lib,test}/**/*")
+  s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib}/**/*")
   # s.executables    = ['resourceful']
   
   s.add_dependency('nokogiri')
