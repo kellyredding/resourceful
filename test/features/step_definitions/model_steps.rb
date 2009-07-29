@@ -13,6 +13,7 @@ end
 Then /^the result should be a valid User model$/ do
   [:id, :name, :screen_name, :location, :description, :profile_image_url, :url, :protected, :followers_count, :friends_count, :created_on, :last_status_at, :last_status].each do |attribute|
     assert @result.respond_to?(attribute)
+    assert_not_nil @result
   end
   {
     :id => 38225297,
@@ -48,6 +49,14 @@ Then /^the result should be a collection of valid Status models$/ do
   assert_kind_of Resourceful::Model::Base, @result.first.user  
 end
 
+Then /^the result should be a valid Json model$/ do
+  assert_valid_json_model(@result)
+end
+
+Then /^the result should be a collection of valid Json models$/ do
+  assert_valid_json_model(@result.first)
+end
+
 def assert_valid_status(status)
   [:id, :text, :source, :truncated, :favorited, :reply_status, :reply_user].each do |attribute|
     assert status.respond_to?(attribute)
@@ -59,5 +68,9 @@ def assert_valid_status(status)
   [:id, :text, :truncated, :favorited].each do |attribute|
     assert !status.send(attribute.to_s).nil?
   end
-  
+end
+
+def assert_valid_json_model(json)
+  assert json.respond_to?(:attributes)
+  assert_not_nil json.attributes  
 end
