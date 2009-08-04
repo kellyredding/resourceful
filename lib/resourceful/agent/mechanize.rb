@@ -8,7 +8,7 @@ module Resourceful
       def initialize(args={})
         super(args)
         self.log = yield if block_given?
-        @mechanize = ::WWW::Mechanize.new
+        @mechanize = ::WWW::Mechanize.new { |obj| obj.log = @logger }
       end
 
       def get(path, opts={})
