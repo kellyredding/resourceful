@@ -28,6 +28,12 @@ module Resourceful
         end
       end
       
+      unless "".respond_to?(:from_currency_to_f) 
+        def from_currency_to_f
+          self.gsub(/[^0-9.-]/,'').to_f
+        end
+      end
+      
       unless "".respond_to?(:constantize) 
         if Module.method(:const_get).arity == 1
           def constantize #:nodoc:

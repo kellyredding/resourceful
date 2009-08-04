@@ -13,7 +13,12 @@ module Resourceful
 
       def get(path, opts={})
         super(path, opts) do |path|
-          @rest_client[path].get
+          result = @rest_client[path].get
+          if block_given?
+            yield result
+          else
+            result
+          end
         end
       end
       

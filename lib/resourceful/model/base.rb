@@ -9,10 +9,12 @@ module Resourceful
       end
       
       def self.get(path, opts={})
-        set_agent.get(path, opts)
+        get_proc = opts.delete(:get_proc)
+        set_agent.get(path, opts, &get_proc)
       end
       def self.get_collection(path, opts={})
-        (yield set_agent.get(path, opts)).collect{|data| new(data)}
+        get_proc = opts.delete(:get_proc)
+        (yield set_agent.get(path, opts, &get_proc)).collect{|data| new(data)}
       end
 
       def initialize(data)
