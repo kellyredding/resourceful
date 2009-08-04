@@ -1,4 +1,4 @@
-Feature: Get Resource
+Feature: Get Resource using rest client agent
   In order to consume rest based resources
   As an object
   I want to get data from a web resource as a formatted object
@@ -58,4 +58,4 @@ Feature: Get Resource
   Scenario: Get non existent resource
     Given I have a configured RestClient resource host
     When I get a resource that does not exist
-    Then resourceful should complain about the resource not being found
+    Then RestClient should complain about the resource not being found

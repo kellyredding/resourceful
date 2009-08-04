@@ -3,11 +3,11 @@ Given /^I am user with the screen_name "([^\"]*)"$/ do |screen_name|
 end
 
 When /^I load my "([^\"]*)" user model$/ do |klass|
-  @result = "User#{klass}".constantize.find(@screen_name)
+  @result = "RestClientUser#{klass}".constantize.find(@screen_name)
 end
 
 When /^I load the "([^\"]*)" status "([^\"]*)"$/ do |klass, collection|
-  @result = "Status#{klass}".constantize.find(collection)
+  @result = "RestClientStatus#{klass}".constantize.find(collection)
 end
 
 Then /^the result should be a valid User model$/ do

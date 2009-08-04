@@ -60,9 +60,3 @@ Then /^resourceful should complain about a format error$/ do
   assert_kind_of Resourceful::Exceptions::FormatError, @result
   assert @result.message.length > 0
 end
-
-Then /^resourceful should complain about the resource not being found$/ do
-  assert @result
-  assert_kind_of RestClient::ResourceNotFound, @result
-  assert @result.message.length > 0
-end

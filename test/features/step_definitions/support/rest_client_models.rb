@@ -1,4 +1,4 @@
-class UserXml < Resourceful::Model::Xml
+class RestClientUserXml < Resourceful::Model::Xml
   
   agent do 
     REST_CLIENT_TWITTER
@@ -22,11 +22,11 @@ class UserXml < Resourceful::Model::Xml
   attribute :last_status_at, :datetime, :path => "status/created_at"
   attribute :last_status, :string, :path => "status/text"
   
-  has_one :last_status, :path => "status", :klass => "StatusXml"
+  has_one :last_status, :path => "status", :klass => "RestClientStatusXml"
 
 end
 
-class UserJson < Resourceful::Model::Json
+class RestClientUserJson < Resourceful::Model::Json
   
   agent do 
     REST_CLIENT_TWITTER
@@ -50,11 +50,11 @@ class UserJson < Resourceful::Model::Json
   attribute :last_status_at, :datetime, :path => "status/created_at"
   attribute :last_status, :string, :path => "status/text"
   
-  has_one :last_status, :path => "status", :klass => "StatusJson"
+  has_one :last_status, :path => "status", :klass => "RestClientStatusJson"
 
 end
 
-class StatusXml < Resourceful::Model::Xml
+class RestClientStatusXml < Resourceful::Model::Xml
   
   agent do 
     REST_CLIENT_TWITTER
@@ -75,11 +75,11 @@ class StatusXml < Resourceful::Model::Xml
   attribute :user_id, :integer, :path => "user/id"
   attribute :user_screen_name, :integer, :path => "user/screen_name"
 
-  has_one :user, :path => "user", :klass => "UserXml"
+  has_one :user, :path => "user", :klass => "RestClientUserXml"
   
 end
 
-class StatusJson < Resourceful::Model::Json
+class RestClientStatusJson < Resourceful::Model::Json
   
   agent do 
     REST_CLIENT_TWITTER
@@ -100,6 +100,6 @@ class StatusJson < Resourceful::Model::Json
   attribute :user_id, :integer, :path => "user/id"
   attribute :user_screen_name, :string, :path => "user/screen_name"
 
-  belongs_to :user, :klass => "UserJson"
+  belongs_to :user, :klass => "RestClientUserJson"
 
 end

@@ -14,3 +14,8 @@ Given /^I have a configured RestClient resource host set to log$/ do
   }
 end
 
+Then /^RestClient should complain about the resource not being found$/ do
+  assert @result
+  assert_kind_of RestClient::ResourceNotFound, @result
+  assert @result.message.length > 0
+end
