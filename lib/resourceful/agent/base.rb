@@ -37,7 +37,7 @@ module Resourceful
       protected
 
       def check_config(path, opts) # :nodoc:
-        raise Resourceful::Exceptions::ConfigurationError, "invalid Mechanize agent" unless agent && agent_url && !agent_url.empty?
+        raise Resourceful::Exceptions::ConfigurationError, "invalid agent" unless agent && agent_url && !agent_url.empty?
         opts ||= {}
         opts[:force] ||= false
         if path =~ /^(.+)\.(.+)$/

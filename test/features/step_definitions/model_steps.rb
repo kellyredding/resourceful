@@ -37,14 +37,12 @@ Then /^the result should be a collection of valid Status models$/ do
   assert_equal 20, @result.length
   assert_valid_status(@result.first)
 
-  [:user_id, :user_screen_name, :user].each do |attribute|
+  [:user_id, :user_screen_name, :user, :attributes].each do |attribute|
     assert @result.first.respond_to?(attribute)
     assert_nothing_raised do
       @result.first.send(attribute.to_s)
     end
-  end
-  [:user_id, :user_screen_name, :user].each do |attribute|
-    assert !@result.first.send(attribute.to_s).nil?
+    assert_not_nil @result.first.send(attribute.to_s)
   end
   assert_kind_of Resourceful::Model::Base, @result.first.user  
 end
@@ -72,5 +70,5 @@ end
 
 def assert_valid_json_model(json)
   assert json.respond_to?(:attributes)
-  assert_not_nil json.attributes  
+  assert_not_nil json.attributes
 end

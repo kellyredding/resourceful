@@ -24,9 +24,15 @@ module Resourceful
         @data
       end
       
+      def attributes
+        @attributes ||= @@attributes[self.class.name].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh }
+      end
+      
       protected
       
       def self.attribute(name, type, config={})
+        clean_name = name.to_s.gsub(/\W/,'')
+        add_to_attributes(name.to_s)
         config ||= {}
         config[:path] ||= name
         content_method = case type.to_sym
@@ -48,8 +54,8 @@ module Resourceful
           'to_s'
         end
         define_method(name) do
-          instance_variable_get("@#{name.to_s.gsub(/\W/,'')}") || \
-            instance_variable_set("@#{name.to_s.gsub(/\W/,'')}", \
+          instance_variable_get("@#{clean_name}") || \
+            instance_variable_set("@#{clean_name}", \
               if ((a = attribute(config)) && a.kind_of?(String))
                 self.class.get_value(a, config).send(content_method)
               else
@@ -108,6 +114,13 @@ module Resourceful
       
       private
       
+      def self.add_to_attributes(name)
+        @@attributes ||= {}
+        klass_name = self.name
+        @@attributes[klass_name] ||= []
+        @@attributes[klass_name] << name
+      end
+
       def self.get_value(attribute, opts={})
         if opts[:value]
           (attribute =~ opts[:value]) ? ($1 || $&) : nil
