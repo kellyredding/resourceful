@@ -41,7 +41,6 @@ module Resourceful
         opts ||= {}
         opts[:force] ||= false
         if path =~ /^(.+)\.(.+)$/
-          path = $1
           opts[:format] ||= $2
         end
         opts[:format] ||= Resourceful::Resource::Json.to_s
@@ -50,7 +49,7 @@ module Resourceful
       end
       
       def self.resource_path(path, format, params) # :nodoc:
-        "#{path}.#{format}#{params.to_http_query_str unless params.empty?}"
+        "#{path}#{params.to_http_query_str unless params.empty?}"
       end
       
       def summary(verb, full_resource_path) # :nodoc:

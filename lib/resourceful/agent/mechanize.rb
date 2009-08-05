@@ -13,13 +13,15 @@ module Resourceful
 
       def get(path, opts={})
         super(path, opts) do |path|
+          resp = ""
           @mechanize.get("#{@host}#{path}") do |page|
-            if block_given?
+            resp = if block_given?
               yield page
             else
               page
             end
-          end.body
+          end
+          resp.body
         end
       end
     

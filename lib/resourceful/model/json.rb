@@ -5,19 +5,21 @@ module Resourceful
       
       attr_reader :json
 
-      def self.get(path, params, force=false)
+      def self.get(path, params, force=false, &block)
         opts = {
           :format => 'json',
           :params => params || {},
-          :force => force
+          :force => force,
+          :on_response => block
         }
         new(super(path, opts))
       end
-      def self.get_collection(path, params, force=false)
+      def self.get_collection(path, params, force=false, &block)
         opts = {
           :format => 'json',
           :params => params || {},
-          :force => force
+          :force => force,
+          :on_response => block
         }
         super(path, opts) do |data|
           data

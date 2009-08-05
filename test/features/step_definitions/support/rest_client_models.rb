@@ -5,7 +5,7 @@ class RestClientUserXml < Resourceful::Model::Xml
   end
   
   def self.find(screen_name, force=false)
-    get("/users/#{screen_name}", {}, "//user")
+    get("/users/#{screen_name}.xml", {}, "//user")
   end
   
   attribute :id, :integer
@@ -33,7 +33,7 @@ class RestClientUserJson < Resourceful::Model::Json
   end
   
   def self.find(screen_name, force=false)
-    get("/users/#{screen_name}", {})
+    get("/users/#{screen_name}.json", {})
   end
   
   attribute :id, :integer
@@ -61,7 +61,7 @@ class RestClientStatusXml < Resourceful::Model::Xml
   end
   
   def self.find(collection, force=false)
-    get_collection("/statuses/#{collection}", {}, "//statuses/status")
+    get_collection("/statuses/#{collection}.xml", {}, "//statuses/status")
   end
   
   attribute :id, :integer
@@ -86,7 +86,7 @@ class RestClientStatusJson < Resourceful::Model::Json
   end
   
   def self.find(collection, force=false)
-    get_collection("/statuses/#{collection}", {})
+    get_collection("/statuses/#{collection}.json", {})
   end
   
   attribute :id, :integer

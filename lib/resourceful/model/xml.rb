@@ -5,22 +5,24 @@ module Resourceful
       
       attr_reader :xml
 
-      def self.get(path, params, xpath, force=false)
+      def self.get(path, params, search, force=false, &block)
         opts = {
           :format => 'xml',
           :params => params || {},
-          :force => force
+          :force => force,
+          :on_response => block
         }
-        new(super(path, opts).xpath(xpath))
+        new(super(path, opts).search(search))
       end
-      def self.get_collection(path, params, xpath, force=false)
+      def self.get_collection(path, params, search, force=false, &block)
         opts = {
           :format => 'xml',
           :params => params || {},
-          :force => force
+          :force => force,
+          :on_response => block
         }
         super(path, opts) do |data|
-          data.xpath(xpath)
+          data.search(search)
         end
       end
 

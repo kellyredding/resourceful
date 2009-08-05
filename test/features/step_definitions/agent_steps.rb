@@ -12,7 +12,7 @@ end
 
 Then /^resourceful should complain about a configuration error$/ do
   assert_raise Resourceful::Exceptions::ConfigurationError do
-    @agent.get RESOURCE_CONFIG[:resource], :format => 'json', :params => RESOURCE_CONFIG[:params]
+    @agent.get RESOURCE_CONFIG[:resource]+'.json', :format => 'json', :params => RESOURCE_CONFIG[:params]
   end
 end
 
@@ -31,7 +31,7 @@ end
 
 When /^I get a[n]* (.+) formatted resource$/ do |format|
   @result = ResourcefulFeature::Helpers.safe_run_get do
-    @agent.get RESOURCE_CONFIG[:resource], :format => format, :params => RESOURCE_CONFIG[:params]
+    @agent.get RESOURCE_CONFIG[:resource]+".#{format}", :format => format, :params => RESOURCE_CONFIG[:params]
   end
 end
 
@@ -43,7 +43,7 @@ end
 
 When /^I get a resource that does not exist$/ do
   @result = ResourcefulFeature::Helpers.safe_run_get do
-    @agent.get '/unknown', :format => 'xml', :params => RESOURCE_CONFIG[:params]
+    @agent.get '/unknown.xml', :format => 'xml', :params => RESOURCE_CONFIG[:params]
   end
 end
 

@@ -9,12 +9,12 @@ module Resourceful
       end
       
       def self.get(path, opts={})
-        get_proc = opts.delete(:get_proc)
-        set_agent.get(path, opts, &get_proc)
+        block = opts.delete(:on_response)
+        set_agent.get(path, opts, &block)
       end
       def self.get_collection(path, opts={})
-        get_proc = opts.delete(:get_proc)
-        (yield set_agent.get(path, opts, &get_proc)).collect{|data| new(data)}
+        block = opts.delete(:on_response)
+        (yield set_agent.get(path, opts, &block)).collect{|data| new(data)}
       end
 
       def initialize(data)
@@ -45,7 +45,7 @@ module Resourceful
           instance_variable_get("@#{name}") || \
             instance_variable_set("@#{name}", \
               if ((a = attribute(config)) && a.kind_of?(String))
-                a.send(content_method)
+                self.class.get_value(a, config).send(content_method)
               else
                 a
               end
@@ -101,6 +101,14 @@ module Resourceful
       end
       
       private
+      
+      def self.get_value(attribute, opts={})
+        if opts[:value]
+          (attribute =~ opts[:value]) ? ($1 || $&) : nil
+        else
+          attribute
+        end
+      end
       
       def self.set_agent
         unless @@agent.kind_of?(Resourceful::Agent::Base)
