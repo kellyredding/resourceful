@@ -35,7 +35,7 @@ module Resourceful
       
       def attribute(config)
         begin
-          get_node("./#{config[:path]}").content
+          get_node("#{config[:path]}").send((config[:content] || 'content').to_s)
         rescue Exception => err
           nil
         end          
@@ -43,14 +43,14 @@ module Resourceful
         
       def child(config)
         begin
-          get_node("./#{config[:path]}")
+          get_node("#{config[:path]}")
         rescue Exception => err
           nil
         end
       end
         
       def self.get_node(xml, path)
-        xml.xpath(path.to_s).first
+        xml.search(path.to_s).first
       end
       def get_node(path)
         self.class.get_node(@data, path)
