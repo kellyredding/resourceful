@@ -1,5 +1,27 @@
 module Resourceful
   module Extensions   
+    module NilClass
+      
+      module ClassMethods; end
+      def self.included(klass)
+        klass.extend(ClassMethods) if klass.kind_of?(Class)
+      end
+
+      module ClassMethods
+      end
+
+      unless nil.respond_to?(:to_boolean) 
+        def to_boolean
+          !!self
+        end
+      end
+      
+    end
+  end
+end
+
+module Resourceful
+  module Extensions   
     module String
       
       module ClassMethods; end
@@ -93,6 +115,10 @@ module Resourceful
       
     end
   end
+end
+
+class NilClass
+  include Resourceful::Extensions::NilClass
 end
 
 class String

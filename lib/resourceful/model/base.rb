@@ -20,6 +20,10 @@ module Resourceful
       def initialize(data)
       end
       
+      def data
+        @data
+      end
+      
       protected
       
       def self.attribute(name, type, config={})
@@ -32,6 +36,8 @@ module Resourceful
           'to_i'
         when :float
           'to_f'
+        when :currency
+          'from_currency_to_f'
         when :date
           'to_date'
         when :datetime
@@ -42,8 +48,8 @@ module Resourceful
           'to_s'
         end
         define_method(name) do
-          instance_variable_get("@#{name}") || \
-            instance_variable_set("@#{name}", \
+          instance_variable_get("@#{name.to_s.gsub(/\W/,'')}") || \
+            instance_variable_set("@#{name.to_s.gsub(/\W/,'')}", \
               if ((a = attribute(config)) && a.kind_of?(String))
                 self.class.get_value(a, config).send(content_method)
               else
