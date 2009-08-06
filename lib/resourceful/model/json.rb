@@ -31,10 +31,6 @@ module Resourceful
         @data = json
       end
       
-      #def attributes
-      #  @data
-      #end
-      
       protected
       
       def attribute(config)

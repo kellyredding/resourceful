@@ -34,7 +34,7 @@ module Resourceful
         clean_name = name.to_s.gsub(/\W/,'')
         add_to_attributes(name.to_s)
         config ||= {}
-        config[:path] ||= name
+        config[:path] ||= clean_name
         content_method = case type.to_sym
         when :string
           'to_s'
@@ -66,11 +66,12 @@ module Resourceful
       end
 
       def self.has_one(name, config={})
+        clean_name = name.to_s.gsub(/\W/,'')
         config ||= {}
-        config[:path] ||= name
+        config[:path] ||= clean_name
         define_method(name) do
-          instance_variable_get("@#{name}") || \
-            instance_variable_set("@#{name}", \
+          instance_variable_get("@#{clean_name}") || \
+            instance_variable_set("@#{clean_name}", \
               if (c = child(config))
                 config[:klass].constantize.new(c) rescue c
               else
@@ -81,11 +82,12 @@ module Resourceful
       end
 
       def self.has_many(name, config={})
+        clean_name = name.to_s.gsub(/\W/,'')
         config ||= {}
-        config[:path] ||= name
+        config[:path] ||= clean_name
         define_method(name) do
-          instance_variable_get("@#{name}") || \
-            instance_variable_set("@#{name}", \
+          instance_variable_get("@#{clean_name}") || \
+            instance_variable_set("@#{clean_name}", \
               if ((c = child(config)) && c.respond_to?(:collect))
                 c.collect do |item|
                   config[:klass].constantize.new(item) rescue item
@@ -98,11 +100,12 @@ module Resourceful
       end
 
       def self.belongs_to(name, config={})
+        clean_name = name.to_s.gsub(/\W/,'')
         config ||= {}
-        config[:id] ||= "#{name}_id"
+        config[:id] ||= "#{clean_name}_id"
         define_method(name) do
-          instance_variable_get("@#{name}") || \
-            instance_variable_set("@#{name}", \
+          instance_variable_get("@#{clean_name}") || \
+            instance_variable_set("@#{clean_name}", \
               if ((k = config[:klass].constantize) && k.respond_to?(:find))
                 self.respond_to?(config[:id]) ? k.find(self.send(config[:id])) : nil
               else
