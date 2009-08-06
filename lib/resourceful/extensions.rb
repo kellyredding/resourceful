@@ -46,7 +46,7 @@ module Resourceful
       
       unless "".respond_to?(:to_boolean) 
         def to_boolean
-          self =~ /^(true|1)$/i ? true : false
+          self.nil? || self.empty? || self =~ /^(false|0)$/i ? false : true
         end
       end
       
