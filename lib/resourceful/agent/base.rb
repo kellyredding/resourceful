@@ -17,13 +17,15 @@ module Resourceful
         @logger.add(Log4r::StdoutOutputter.new('console'))
       end
       
-      def get(path, opts={}, &block)
+      protected
+
+      def call_resource(verb, path, opts={}, &block)
         path, opts = check_config(path, opts)
         format = Resourceful::Resource::Format.get(opts[:format])
         
         full_resource_path = self.class.resource_path(path, format, opts[:params])
-        resource_summary = summary('get', full_resource_path)
-        cache_key = Resourceful::Resource::Cache.key(@host, 'get', full_resource_path)
+        resource_summary = summary(verb.to_s, full_resource_path)
+        cache_key = Resourceful::Resource::Cache.key(@host, verb.to_s, full_resource_path)
         
         if opts[:force] || (resp = cache.read(cache_key)).nil?
           log "Resource call: #{resource_summary}"
@@ -34,8 +36,6 @@ module Resourceful
         format.build(resp)
       end
     
-      protected
-
       def check_config(path, opts) # :nodoc:
         raise Resourceful::Exceptions::ConfigurationError, "invalid agent" unless agent && agent_url && !agent_url.empty?
         opts ||= {}

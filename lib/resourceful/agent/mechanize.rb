@@ -18,21 +18,21 @@ module Resourceful
         end
       end
 
-      def get(path, opts={})
-        super(path, opts) do |path|
+      def get(path, opts={}, &block)
+        call_resource(:get, path, opts, block)
+      end
+    
+      protected
+      
+      def call_resource(verb, path, opts, block)
+        super(verb, path, opts) do |path|
           resp = ""
-          @mechanize.get("#{@host}#{path}") do |page|
-            resp = if block_given?
-              yield page
-            else
-              page
-            end
+          @mechanize.send(verb.to_s, "#{@host}#{path}") do |page|
+            resp = block ? block.call(page) : page
           end
           resp.body
         end
       end
-    
-      protected
       
       def agent
         @mechanize
