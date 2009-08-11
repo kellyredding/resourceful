@@ -24,8 +24,43 @@ module Resourceful
         @data
       end
       
-      def attributes
+      def new_record?
+        @data.nil?
+      end
+      
+      def attributes(force=false)
         @attributes ||= @@attributes[self.class.name].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh }
+      end
+      
+      def update_attributes(attr_hash={})
+        attr_hash.each do |k,v|
+          self.send("#{key}=", v)
+        end
+        attributes(true)
+      end
+      
+      def save
+        yield attributes(true)
+      end
+      
+      def destroy
+        yield attributes(true)
+        @data = nil
+      end
+      
+      def post(path, opts={}, body=nil)
+        block = opts.delete(:on_response)
+        set_agent.post(path, opts, body, block)
+      end
+      
+      def put(path, opts={}, body=nil)
+        block = opts.delete(:on_response)
+        set_agent.put(path, opts, body, block)
+      end
+      
+      def delete(path, opts={}, body=nil)
+        block = opts.delete(:on_response)
+        set_agent.delete(path, opts, body, block)
       end
       
       protected
@@ -62,6 +97,9 @@ module Resourceful
                 a
               end
             )
+        end
+        define_method("#{name}=") do |value|
+          instance_variable_set("@#{clean_name}", value)
         end
       end
 

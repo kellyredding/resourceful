@@ -4,17 +4,33 @@ class RestClientWidgetXml < Resourceful::Model::Xml
     WIDGETS_REST_CLIENT
   end
   
+  def self.item_path(id)
+    "/widgets/#{id}.xml"
+  end
+  
   def self.find(id)
     case id
     when :all
       get_collection("/widgets.xml", {}, "//widgets/widget")
     else
-      get("/widgets/#{id}.xml", {}, "//widget")
+      get(item_path(id), {}, "//widget")
     end
   end
   
   attribute :id, :integer
   attribute :name, :string
+  
+  def save
+    super do |attribute_hash|
+      self.send(new_record? ? "post" : "put", self.class.item_path(id), {}, {:widget => attribute_hash})
+    end
+  end
+  
+  def destroy
+    super do |attribute_hash|
+      self.delete(self.class.item_path(id), {}, {:widget => attribute_hash})
+    end
+  end
 
 end
 
@@ -24,15 +40,32 @@ class RestClientWidgetJson < Resourceful::Model::Json
     WIDGETS_REST_CLIENT
   end
   
+  def self.item_path(id)
+    "/widgets/#{id}.json"
+  end
+  
   def self.find(id, force=false)
     case id
     when :all
       get_collection("/widgets.json", {})
     else
-      get("/widgets/#{id}.json", {})
+      get(item_path(id), {})
     end
   end
   
   attribute :id, :integer
   attribute :name, :string
+
+  def save
+    super do |attribute_hash|
+      self.send(new_record? ? "post" : "put", self.class.item_path(id), {}, {:widget => attribute_hash})
+    end
+  end
+  
+  def destroy
+    super do |attribute_hash|
+      self.delete(self.class.item_path(id), {}, {:widget => attribute_hash})
+    end
+  end
+
 end
