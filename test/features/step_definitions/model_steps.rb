@@ -2,9 +2,28 @@ When /^I load the "([^\"]*)" widget model "([^\"]*)"$/ do |klass, id|
   @result = "RestClientWidget#{klass}".constantize.find(id)
 end
 
+When /^I create a new "([^\"]*)" widget model$/ do |klass|
+  @result = "RestClientWidget#{klass}".constantize.new
+end
+
 When /^I load the "([^\"]*)" widgets collection$/ do |klass|
   @result = "RestClientWidget#{klass}".constantize.find(:all)
 end
+
+When /^I update "([^\"]*)" to be "([^\"]*)"$/ do |a, v|
+  @result.send(a, v)
+end
+
+When /^I save the widget$/ do
+  @result.save
+  p @result
+end
+
+When /^destroy the widget$/ do
+  @result.destroy
+  p @result
+end
+
 
 Then /^the result should be a valid Widget model$/ do
   assert_valid_widget_model @result

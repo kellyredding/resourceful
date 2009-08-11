@@ -18,3 +18,20 @@ Feature:  Models
   Scenario: Get XML status collection
     When I load the "Xml" widgets collection
     Then the result should be a collection of valid Widget models
+
+  Scenario: Put JSON widget
+    When I load the "Json" widget model "1"
+    And I update "name" to be "foo"
+    And I save the widget
+    Then the result should be a valid Widget model
+
+  Scenario: Post a new Xml widget
+    When I create a new "Xml" widget model
+    And I update "name" to be "foo"
+    And I save the widget
+    Then the result should be a valid Widget model
+
+  Scenario: Delete Xml widget
+    When I load the "Xml" widget model "1"
+    And destroy the widget
+    Then the result should be a valid Widget model

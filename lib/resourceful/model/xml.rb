@@ -26,8 +26,8 @@ module Resourceful
         end
       end
 
-      def initialize(xml)
-        raise Resourceful::Exceptions::ModelError, "trying to initialize a Resourceful::Model::Xml model with '#{xml.class.name}' data" unless xml.kind_of?(Nokogiri::XML::NodeSet) || xml.kind_of?(Nokogiri::XML::Element)
+      def initialize(xml=nil)
+        raise Resourceful::Exceptions::ModelError, "trying to initialize a Resourceful::Model::Xml model with '#{xml.class.name}' data" unless xml.nil? || xml.kind_of?(Nokogiri::XML::NodeSet) || xml.kind_of?(Nokogiri::XML::Element)
         @data = xml
       end
       

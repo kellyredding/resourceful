@@ -26,8 +26,8 @@ module Resourceful
         end
       end
 
-      def initialize(json)
-        raise Resourceful::Exceptions::ModelError, "trying to initialize a Resourceful::Model::Json model with '#{json.class.name}' data" unless json.kind_of?(::Hash)
+      def initialize(json=nil)
+        raise Resourceful::Exceptions::ModelError, "trying to initialize a Resourceful::Model::Json model with '#{json.class.name}' data" unless json.nil? || json.kind_of?(::Hash)
         @data = json
       end
       

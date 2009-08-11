@@ -49,15 +49,24 @@ WIDGETS_1_XML = %{<?xml version="1.0" encoding="UTF-8"?>
     <id type="integer">1</id>
   </widget>
 }
+WIDGETS_EDIT_XML = %{<?xml version="1.0" encoding="UTF-8"?>
+  <widget>
+    <name>Foo</name>
+    <id type="integer">1</id>
+  </widget>
+}
 WIDGETS_1_JSON = %{
 {"name": "One", "id": 1}
 }
+WIDGETS_EDIT_JSON = %{
+{"name": "Foo", "id": 1}
+}
 FakeWeb.register_uri(:get, "#{WIDGETS_HOST}/widgets.xml", :body => WIDGETS_ALL_XML)
 FakeWeb.register_uri(:get, "#{WIDGETS_HOST}/widgets.json", :body => WIDGETS_ALL_JSON)
-FakeWeb.register_uri(:post, "#{WIDGETS_HOST}/widgets.xml", :body => WIDGETS_1_XML)
-FakeWeb.register_uri(:post, "#{WIDGETS_HOST}/widgets.json", :body => WIDGETS_1_JSON)
-FakeWeb.register_uri(:put, "#{WIDGETS_HOST}/widgets/1.xml", :body => WIDGETS_1_XML)
-FakeWeb.register_uri(:put, "#{WIDGETS_HOST}/widgets/1.json", :body => WIDGETS_1_JSON)
+FakeWeb.register_uri(:post, "#{WIDGETS_HOST}/widgets.xml", :body => WIDGETS_EDIT_XML)
+FakeWeb.register_uri(:post, "#{WIDGETS_HOST}/widgets.json", :body => WIDGETS_EDIT_JSON)
+FakeWeb.register_uri(:put, "#{WIDGETS_HOST}/widgets/1.xml", :body => WIDGETS_EDIT_XML)
+FakeWeb.register_uri(:put, "#{WIDGETS_HOST}/widgets/1.json", :body => WIDGETS_EDIT_JSON)
 FakeWeb.register_uri(:delete, "#{WIDGETS_HOST}/widgets/1.xml", :body => WIDGETS_1_XML)
 FakeWeb.register_uri(:delete, "#{WIDGETS_HOST}/widgets/1.json", :body => WIDGETS_1_JSON)
 FakeWeb.register_uri(:get, "#{WIDGETS_HOST}/widgets/1.xml", :body => WIDGETS_1_XML)

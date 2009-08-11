@@ -29,7 +29,10 @@ module Resourceful
       end
       
       def attributes(force=false)
-        @attributes ||= @@attributes[self.class.name].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh }
+        if @attributes.nil? || force
+          @attributes = @@attributes[self.class.name].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh }
+        end
+        @attributes
       end
       
       def update_attributes(attr_hash={})
@@ -40,7 +43,8 @@ module Resourceful
       end
       
       def save
-        yield attributes(true)
+        @data = yield attributes(true)
+        reset_attributes
       end
       
       def destroy
@@ -48,26 +52,17 @@ module Resourceful
         @data = nil
       end
       
-      def post(path, opts={}, body=nil)
-        block = opts.delete(:on_response)
-        set_agent.post(path, opts, body, block)
-      end
-      
-      def put(path, opts={}, body=nil)
-        block = opts.delete(:on_response)
-        set_agent.put(path, opts, body, block)
-      end
-      
-      def delete(path, opts={}, body=nil)
-        block = opts.delete(:on_response)
-        set_agent.delete(path, opts, body, block)
-      end
-      
       protected
+      
+      def push_data(verb, path, opts, data)
+        block = opts.delete(:on_response)
+        ['id', :id].each { |a| data.delete(a) } if data.kind_of?(::Hash)
+        self.class.set_agent.send(verb.to_s, path, opts, data, &block)
+      end
       
       def self.attribute(name, type, config={})
         clean_name = name.to_s.gsub(/\W/,'')
-        add_to_attributes(name.to_s)
+        add_to_attributes(clean_name)
         config ||= {}
         config[:path] ||= clean_name
         content_method = case type.to_sym
@@ -154,6 +149,20 @@ module Resourceful
       end
       
       private
+      
+      def reset_attributes
+        clear_attributes
+        attributes(true)
+      end
+      
+      def clear_attributes
+        @@attributes ||= {}
+        klass_name = self.class.name
+        @@attributes[klass_name] ||= []
+        @@attributes[klass_name].each do |a|
+          instance_variable_set("@#{a}", nil)
+        end
+      end
       
       def self.add_to_attributes(name)
         @@attributes ||= {}
