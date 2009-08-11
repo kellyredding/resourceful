@@ -37,8 +37,9 @@ The supported formats are:
 A suite of cucumber features are available for you to run as an acceptance test.  You should look to the features 
 for additional documentation and usage scenarios.  To run the features:
 
-    # make sure you have the cucumber gem
+    # make sure you have these gems
     $ sudo gem install cucumber
+    $ sudo gem install fakeweb
     # change to the resourceful gem installed location
     $ cd /opt/local/lib/ruby/gems/x.x/gems/kelredd-resourceful-xxx
     $ rake features

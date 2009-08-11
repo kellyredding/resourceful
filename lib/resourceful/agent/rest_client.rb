@@ -15,7 +15,24 @@ module Resourceful
         call_resource(:get, path, opts, block)
       end
       
+      def post(path, opts={}, body=nil, &block)
+        push_resource(:post, path, opts, body, block)
+      end
+      
+      def put(path, opts={}, body=nil, &block)
+        push_resource(:put, path, opts, body, block)
+      end
+      
+      def delete(path, opts={}, body=nil, &block)
+        push_resource(:delete, path, opts, body, block)
+      end
+      
       protected
+      
+      def push_resource(verb, path, opts, body, block)
+        opts[:body] = body
+        call_resource(verb, path, opts, block)
+      end
       
       def call_resource(verb, path, opts, block)
         super(verb, path, opts) do |path|
