@@ -2,8 +2,8 @@ module Resourceful
   module Version
     
     MAJOR = 0
-    MINOR = 4
-    TINY  = 9
+    MINOR = 5
+    TINY  = 0
     
     def self.to_s # :nodoc:
       [MAJOR, MINOR, TINY].join('.')

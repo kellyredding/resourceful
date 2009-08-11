@@ -62,7 +62,7 @@ module Resourceful
       
       def self.attribute(name, type, config={})
         clean_name = name.to_s.gsub(/\W/,'')
-        add_to_attributes(clean_name)
+        add_to_attributes(name.to_s)
         config ||= {}
         config[:path] ||= clean_name
         content_method = case type.to_sym
@@ -160,7 +160,7 @@ module Resourceful
         klass_name = self.class.name
         @@attributes[klass_name] ||= []
         @@attributes[klass_name].each do |a|
-          instance_variable_set("@#{a}", nil)
+          instance_variable_set("@#{a.to_s.gsub(/\W/,'')}", nil)
         end
       end
       
