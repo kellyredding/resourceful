@@ -30,7 +30,12 @@ module Resourceful
       
       def attributes(force=false)
         if @attributes.nil? || force
-          @attributes = @@attributes[self.class.name].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh }
+          @attributes = {}
+          self.class.ancestors.each do |anc|
+            if @@attributes[anc.to_s]
+              @attributes.merge!(@@attributes[anc.to_s].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh })
+            end
+          end
         end
         @attributes
       end
