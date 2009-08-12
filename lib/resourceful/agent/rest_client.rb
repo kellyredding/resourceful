@@ -31,6 +31,7 @@ module Resourceful
       
       def push_resource(verb, path, opts, body, block)
         opts[:body] = body
+        opts[:force] = true
         call_resource(verb, path, opts, block)
       end
       
