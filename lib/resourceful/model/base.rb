@@ -3,9 +3,9 @@ module Resourceful
 
     class Base
       
-      @@agent = nil
+      @@agent ||= {}
       def self.agent(&block)
-        @@agent = block;
+        @@agent[self.name.to_s] = block;
       end
       
       def self.get(path, opts={})
@@ -185,10 +185,19 @@ module Resourceful
       end
       
       def self.set_agent
-        unless @@agent.kind_of?(Resourceful::Agent::Base)
-          @@agent = @@agent.call 
+        klass_name = ""
+        self.ancestors.each do |anc|
+          p anc
+          if @@agent[anc.to_s]
+            klass_name = anc.to_s 
+            break
+          end
         end
-        @@agent
+        
+        unless @@agent[klass_name].kind_of?(Resourceful::Agent::Base)
+          @@agent[klass_name] = @@agent[klass_name].call 
+        end
+        @@agent[klass_name]
       end
 
     end

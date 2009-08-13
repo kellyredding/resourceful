@@ -13,7 +13,7 @@ module Resourceful
       def initialize(args={})
         ATTRS.each { |a| instance_variable_set("@#{a.to_s}", args.delete(a)) }
         @cache = Resourceful::Resource::Cache.new
-        @logger = Log4r::Logger.new('Resourceful Base')
+        @logger = Log4r::Logger.new('[Resourceful]')
         @logger.add(Log4r::StdoutOutputter.new('console'))
       end
       
@@ -28,10 +28,10 @@ module Resourceful
         cache_key = Resourceful::Resource::Cache.key(@host, verb.to_s, full_resource_path)
         
         if opts[:force] || (resp = cache.read(cache_key)).nil?
-          log "Resource call: #{resource_summary}"
+          log "#{resource_summary}"
           resp = cache.write(cache_key, block.call(full_resource_path))
         else
-          log "Resource call: [CACHE] #{resource_summary}"
+          log "[CACHE] #{resource_summary}"
         end
         format.build(resp)
       end
@@ -61,13 +61,7 @@ module Resourceful
       end
       
       def log(msg, level = :info) # :nodoc:
-        if(msg)
-          if @logger && @logger.respond_to?(level)
-            @logger.send(level.to_s, msg) 
-          else
-            puts "** [#{level.to_s.upcase}]: #{msg}"
-          end
-        end
+        @logger.send(level.to_s, msg) if msg
       end
       
       def log=(file)
