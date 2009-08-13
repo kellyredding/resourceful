@@ -187,7 +187,6 @@ module Resourceful
       def self.set_agent
         klass_name = ""
         self.ancestors.each do |anc|
-          p anc
           if @@agent[anc.to_s]
             klass_name = anc.to_s 
             break
