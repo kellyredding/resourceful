@@ -9,7 +9,7 @@ end
 Given /^I have a configured Mechanize resource host set to log$/ do
   log_file = File.expand_path(RESOURCE_CONFIG[:log])
   FileUtils.rm(log_file) if File.exists?(log_file)
-  @agent = Resourceful::Agent::Mechanize.new(:host => RESOURCE_CONFIG[:host]) {
+  @agent = Resourceful::Agent::Mechanize.new(:host => RESOURCE_CONFIG[:host], :verbose => true) {
     RESOURCE_CONFIG[:log]
   }
 end
