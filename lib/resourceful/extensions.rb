@@ -10,8 +10,8 @@ module Resourceful
       module ClassMethods
       end
 
-      unless nil.respond_to?(:to_boolean) 
-        def to_boolean
+      unless nil.respond_to?(:to_resourceful_boolean) 
+        def to_resourceful_boolean
           !!self
         end
       end
@@ -44,8 +44,8 @@ module Resourceful
         end
       end
       
-      unless "".respond_to?(:to_boolean) 
-        def to_boolean
+      unless "".respond_to?(:to_resourceful_boolean) 
+        def to_resourceful_boolean
           self.nil? || self.empty? || self =~ /^(false|0)$/i ? false : true
         end
       end

@@ -84,7 +84,7 @@ module Resourceful
         when :datetime
           'to_datetime'
         when :boolean
-          'to_boolean'
+          'to_resourceful_boolean'
         else 
           'to_s'
         end
