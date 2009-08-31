@@ -144,7 +144,14 @@ module Resourceful
           instance_variable_get("@#{clean_name}") || \
             instance_variable_set("@#{clean_name}", \
               if ((k = config[:klass].constantize) && k.respond_to?(:find))
-                self.respond_to?(config[:id]) ? k.find(self.send(config[:id])) : nil
+                if self.respond_to?(config[:id]) && \
+                   (bt_id = self.send(config[:id])) && \
+                   !bt_id.nil? && \
+                   !bt_id.empty?
+                  k.find(bt_id)
+                else
+                  nil
+                end
               else
                 nil
               end
