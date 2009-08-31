@@ -33,7 +33,7 @@ module Resourceful
           @attributes = {}
           self.class.ancestors.each do |anc|
             if @@attributes[anc.to_s]
-              @attributes.merge!(@@attributes[anc.to_s].inject({}) { |hsh, key| hsh[key] = self.send(key); hsh })
+              @attributes.merge!(@@attributes[anc.to_s].inject({}) { |hsh, key| hsh[key] = self.send("_#{key}"); hsh })
             end
           end
         end
@@ -88,16 +88,15 @@ module Resourceful
         else 
           'to_s'
         end
-        define_method(name) do
-          instance_variable_get("@#{clean_name}") || \
-            instance_variable_set("@#{clean_name}", \
-              if ((a = attribute(config)) && a.kind_of?(String))
-                self.class.get_value(a, config).send(content_method)
-              else
-                a
-              end
-            )
+        # method to get the raw attribute variable data (not intended to be overridden)
+        define_method("_#{clean_name}") do
+          fetch_attribute(clean_name, config, content_method)
         end
+        # method to read the attribute value (intended to be overridden when necessary)
+        define_method(name) do
+          fetch_attribute(clean_name, config, content_method)
+        end
+        # method to write the attribute value
         define_method("#{name}=") do |value|
           instance_variable_set("@#{clean_name}", value)
         end
@@ -154,6 +153,17 @@ module Resourceful
       end
       
       private
+      
+      def fetch_attribute(clean_name, config, content_method)
+        instance_variable_get("@#{clean_name}") || \
+          instance_variable_set("@#{clean_name}", \
+            if ((a = attribute(config)) && a.kind_of?(String))
+              self.class.get_value(a, config).send(content_method)
+            else
+              a
+            end
+          )
+      end
       
       def reset_attributes
         clear_attributes
