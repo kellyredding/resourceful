@@ -6,7 +6,7 @@ module Resourceful
 
         protected
         
-        def self.contains_one(name, config={})
+        def contains_one(name, config={})
           clean_name = cleanup_name(name)
           config ||= {}
           config[:path] ||= clean_name
@@ -22,7 +22,7 @@ module Resourceful
           end
         end
 
-        def self.contains_many(name, config={})
+        def contains_many(name, config={})
           clean_name = cleanup_name(name)
           config ||= {}
           config[:path] ||= clean_name

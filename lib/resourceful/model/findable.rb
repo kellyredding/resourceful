@@ -6,6 +6,7 @@ module Resourceful
 
         def find(id, opts={}, force=true)
           opts ||= {}
+          opts = findable_default_opts.merge(opts) if respond_to?(:findable_default_opts)
           case id
           when :all
             self.get_collection("#{findable_index}.#{format}", opts, force)

@@ -10,7 +10,7 @@ module Resourceful
           has_many(name, config).first
         end
 
-        def self.has_many(name, config={})
+        def has_many(name, config={})
           clean_name = cleanup_name(name)
           config ||= {}
           raise ArgumentError, "has_many requires a :class option to be specified" unless config[:class]
@@ -27,7 +27,7 @@ module Resourceful
           end
         end
 
-        def self.belongs_to(name, config={})
+        def belongs_to(name, config={})
           clean_name = cleanup_name(name)
           config ||= {}
           raise ArgumentError, "has_many requires a :class option to be specified" unless config[:class]
@@ -41,10 +41,15 @@ module Resourceful
             unless klass.to_s.constantize.respond_to?(:find)
               raise NotImplementedError, "has_many expects #{klass} to be findable (ie mixin the Findable helper)"
             end
-            instance_variable_get("@#{clean_name}") || \
-              instance_variable_set("@#{clean_name}", \
-                klass.to_s.constantize.find(self.send(foreign_key), config, force)
-              )
+            fk = self.send(foreign_key)
+            if fk.nil? || fk.empty?
+              nil
+            else
+              instance_variable_get("@#{clean_name}") || \
+                instance_variable_set("@#{clean_name}", \
+                  klass.to_s.constantize.find(fk, config, force)
+                )
+            end
           end
         end
 
@@ -56,7 +61,6 @@ module Resourceful
       def self.included(receiver)
         receiver.extend         ClassMethods
         receiver.send :include, InstanceMethods
-        receiver.send :include, Resourceful::Model::Findable
       end
       
     end
