@@ -105,7 +105,7 @@ module Resourceful
         end
       end
 
-      def cleanup_name(name)
+      def self.cleanup_name(name)
         name.to_s.gsub(/\W/,'')
       end
       
