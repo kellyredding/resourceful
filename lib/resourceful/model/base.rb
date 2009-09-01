@@ -16,7 +16,10 @@ module Resourceful
         block = opts.delete(:on_response)
         (yield set_agent.get(path, opts, &block)).collect{|data| new(data)}
       end
-
+      def self.find(id, opts, force)
+        raise NotImplementedError, "no find method has been defined"
+      end
+      
       def initialize(data)
       end
       
@@ -66,7 +69,7 @@ module Resourceful
       end
       
       def self.attribute(name, type, config={})
-        clean_name = name.to_s.gsub(/\W/,'')
+        clean_name = cleanup_name(name)
         add_to_attributes(name.to_s)
         config ||= {}
         config[:path] ||= clean_name
@@ -102,61 +105,8 @@ module Resourceful
         end
       end
 
-      def self.has_one(name, config={})
-        clean_name = name.to_s.gsub(/\W/,'')
-        config ||= {}
-        config[:path] ||= clean_name
-        define_method(name) do
-          instance_variable_get("@#{clean_name}") || \
-            instance_variable_set("@#{clean_name}", \
-              if (c = child(config))
-                config[:klass].constantize.new(c) rescue c
-              else
-                c
-              end
-            )
-        end
-      end
-
-      def self.has_many(name, config={})
-        clean_name = name.to_s.gsub(/\W/,'')
-        config ||= {}
-        config[:path] ||= clean_name
-        define_method(name) do
-          instance_variable_get("@#{clean_name}") || \
-            instance_variable_set("@#{clean_name}", \
-              if ((c = child(config)) && c.respond_to?(:collect))
-                c.collect do |item|
-                  config[:klass].constantize.new(item) rescue item
-                end
-              else
-                c
-              end
-            )
-        end
-      end
-
-      def self.belongs_to(name, config={})
-        clean_name = name.to_s.gsub(/\W/,'')
-        config ||= {}
-        config[:id] ||= "#{clean_name}_id"
-        define_method(name) do
-          instance_variable_get("@#{clean_name}") || \
-            instance_variable_set("@#{clean_name}", \
-              if ((k = config[:klass].constantize) && k.respond_to?(:find))
-                if self.respond_to?(config[:id]) && \
-                   (bt_id = self.send(config[:id])) && \
-                   !bt_id.nil? && \
-                   !bt_id.empty?
-                  k.find(bt_id)
-                else
-                  nil
-                end
-              else
-                nil
-              end
-            )
-        end
+      def cleanup_name(name)
+        name.to_s.gsub(/\W/,'')
       end
       
       private

@@ -35,6 +35,10 @@ module Resourceful
       
       protected
       
+      def self.format
+        Resourceful::Resource::Xml.to_s
+      end
+      
       def attribute(config)
         begin
           get_node(config[:path]).first.send((config[:content] || 'content').to_s)

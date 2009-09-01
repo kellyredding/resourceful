@@ -35,6 +35,10 @@ module Resourceful
       
       protected
       
+      def self.format
+        Resourceful::Resource::Json.to_s
+      end
+      
       def attribute(config)
         begin
           get_node(config[:path])
@@ -54,6 +58,7 @@ module Resourceful
       def get_node(path_config)
         self.class.get_node(@data, path_config)
       end
+
     end
 
   end
