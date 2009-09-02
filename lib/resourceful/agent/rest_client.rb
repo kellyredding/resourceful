@@ -1,5 +1,5 @@
 require 'rest_client'
-require File.join(File.dirname(__FILE__), 'base.rb')
+require "resourceful/agent/base"
 
 module Resourceful
   module Agent

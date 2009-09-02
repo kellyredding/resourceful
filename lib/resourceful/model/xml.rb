@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'base.rb')
+require "resourceful/model/base"
 
 module Resourceful
   module Model

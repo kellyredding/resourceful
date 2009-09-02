@@ -1,5 +1,5 @@
 require 'log4r'
-require File.join(File.dirname(__FILE__), '..', 'resource', 'cache.rb')
+require "resourceful/resource/cache"
 
 module Resourceful
   module Agent
