@@ -20,6 +20,11 @@ module Resourceful
             unless klass.to_s.constantize.respond_to?(:find)
               raise NotImplementedError, "has_many expects #{klass} to be findable (ie mixin the Findable helper)"
             end
+            fk = config.delete(:foreign_key) || "#{self.class.name.downcase.to_s.gsub(/^.*::/, '')}_id"
+            unless config[fk]
+              fk_method = config.delete(:foreign_key_method) || 'id'
+              config[fk] = self.send(fk_method)
+            end
             instance_variable_get("@#{clean_name}") || \
               instance_variable_set("@#{clean_name}", \
                 klass.to_s.constantize.find(:all, config, force)
