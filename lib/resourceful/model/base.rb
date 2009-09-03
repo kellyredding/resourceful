@@ -114,8 +114,12 @@ module Resourceful
       def fetch_attribute(clean_name, config, content_method)
         instance_variable_get("@#{clean_name}") || \
           instance_variable_set("@#{clean_name}", \
-            if ((a = attribute(config)) && a.kind_of?(String))
-              self.class.get_value(a, config).send(content_method)
+            if (a = attribute(config))
+              begin
+                self.class.get_value(a, config).send(content_method)
+              rescue Exception => err
+                a
+              end
             else
               a
             end

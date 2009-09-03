@@ -45,7 +45,7 @@ module Resourceful
               raise NotImplementedError, "has_many expects #{klass} to be findable (ie mixin the Findable helper)"
             end
             fk = self.send(foreign_key)
-            if fk.nil? || fk.empty?
+            if fk.nil? || (fk.respond_to?('empty?') && fk.empty?)
               nil
             else
               instance_variable_get("@#{clean_name}") || \
