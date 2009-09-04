@@ -56,7 +56,7 @@ module Resourceful
       end
         
       def self.get_node(xml, path)
-        xml.search(path.to_s)
+        path.to_s.empty? ? xml : xml.search(path.to_s)
       end
       def get_node(path)
         self.class.get_node(@data, path)
