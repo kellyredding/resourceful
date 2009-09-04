@@ -41,7 +41,9 @@ module Resourceful
       
       def attribute(config)
         begin
-          get_node(config[:path]).first.send((config[:content] || 'content').to_s)
+          node = get_node(config[:path])
+          node = node.first if node.respond_to?('first')
+          node.send((config[:content] || 'content').to_s)
         rescue Exception => err
           nil
         end          
