@@ -45,7 +45,7 @@ module Resourceful
       
       def update_attributes(attr_hash={})
         attr_hash.each do |k,v|
-          self.send("#{key}=", v)
+          self.send("#{k}=", v)
         end
         attributes(true)
       end
