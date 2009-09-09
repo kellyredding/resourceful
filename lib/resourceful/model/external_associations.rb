@@ -14,10 +14,12 @@ module Resourceful
           clean_name = cleanup_name(name)
           config ||= {}
           raise ArgumentError, "has_many requires a :class option to be specified" unless config[:class]
-          klass = config.delete(:class)
+          class_name = config.delete(:class).to_s
+          klass = get_namespaced_klass(class_name)
+          raise ArgumentError, "has_many :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
           force = config.delete(:force) || true
           define_method(name) do
-            unless klass.to_s.constantize.respond_to?(:find)
+            unless klass.respond_to?(:find)
               raise NotImplementedError, "has_many expects #{klass} to be findable (ie mixin the Findable helper)"
             end
             fk = config.delete(:foreign_key) || "#{self.class.name.downcase.to_s.gsub(/^.*::/, '')}_id"
@@ -25,7 +27,7 @@ module Resourceful
             config[fk] = self.send(fk_method)
             instance_variable_get("@#{clean_name}") || \
               instance_variable_set("@#{clean_name}", \
-                klass.to_s.constantize.find(:all, config, force)
+                klass.find(:all, config, force)
               )
           end
         end

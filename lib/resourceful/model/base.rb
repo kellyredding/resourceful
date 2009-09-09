@@ -8,6 +8,19 @@ module Resourceful
         @@agent[self.name.to_s] = block;
       end
       
+      @@namespaces = [""]
+      def self.get_namespaced_klass(class_name)
+        klass = nil
+        @@namespaces.each do |ns|
+          begin
+            klass = "#{ns}::#{class_name}".constantize
+            break;
+          rescue Exception => err
+          end
+        end
+        klass
+      end
+      
       def self.get(path, opts={})
         block = opts.delete(:on_response)
         set_agent.get(path, opts, &block)
@@ -170,6 +183,10 @@ module Resourceful
         @@agent[klass_name]
       end
 
+      def self.add_namespace(ns)
+        @@namespaces.unshift(ns)
+      end
+      
     end
 
   end
