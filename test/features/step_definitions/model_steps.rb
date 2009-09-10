@@ -16,12 +16,10 @@ end
 
 When /^I save the widget$/ do
   @result.save
-  p @result
 end
 
 When /^destroy the widget$/ do
   @result.destroy
-  p @result
 end
 
 

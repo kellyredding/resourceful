@@ -7,24 +7,27 @@ module Resourceful
       
       attr_reader :json
 
-      def self.get(path, params, force=false, &block)
+      def self.get(path, params, search=nil, force=false, &block)
         opts = {
           :format => 'json',
           :params => params || {},
           :force => force,
           :on_response => block
         }
-        new(super(path, opts))
+        result = super(path, opts)
+        hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
+        new(!hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value) ? result.get_value(hsh_keys) : result)
       end
-      def self.get_collection(path, params, force=false, &block)
+      def self.get_collection(path, params, search=nil, force=false, &block)
         opts = {
           :format => 'json',
           :params => params || {},
           :force => force,
           :on_response => block
         }
+        hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
         super(path, opts) do |data|
-          data
+          data.collect{|item| !hsh_keys.nil? && !hsh_keys.empty? && item.respond_to?(:get_value) ? item.get_value(hsh_keys) : item}
         end
       end
 

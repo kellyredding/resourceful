@@ -113,6 +113,23 @@ module Resourceful
         end
       end
       
+      # Returns the value for the provided key(s).  Allows searching in nested hashes
+      unless {}.respond_to?(:get_value) 
+        def get_value(*keys)
+          val = self[keys.first] || self[keys.first.to_s]
+          val = self[keys.first.to_s.intern] unless val || keys.first.to_s.empty? || keys.first.kind_of?(Symbol) 
+          val.kind_of?(Hash) && keys.length > 1 ? val.get_value?(keys[1..-1]) : val
+        end
+      end
+
+      # Determines if a value exists for the provided key(s).  Allows searching in nested hashes
+      unless {}.respond_to?('check_value?') 
+        def check_value?(*keys)
+          val = self.get_value(keys)
+          val && !val.empty? ? true : false
+        end
+      end
+
     end
   end
 end

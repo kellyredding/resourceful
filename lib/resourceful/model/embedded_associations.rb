@@ -10,11 +10,15 @@ module Resourceful
           clean_name = cleanup_name(name)
           config ||= {}
           config[:path] ||= clean_name
+          raise ArgumentError, "contains_one requires a :class option to be specified" unless config[:class]
+          class_name = config.delete(:class).to_s
           define_method(name) do
+            klass = self.class.get_namespaced_klass(class_name)
+            raise ArgumentError, "contains_one :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
             instance_variable_get("@#{clean_name}") || \
               instance_variable_set("@#{clean_name}", \
                 if (c = child(config))
-                  config[:class].constantize.new(c) rescue c
+                  klass.new(c) rescue c
                 else
                   c
                 end
@@ -26,12 +30,16 @@ module Resourceful
           clean_name = cleanup_name(name)
           config ||= {}
           config[:path] ||= clean_name
+          raise ArgumentError, "contains_many requires a :class option to be specified" unless config[:class]
+          class_name = config.delete(:class).to_s
           define_method(name) do
+            klass = self.class.get_namespaced_klass(class_name)
+            raise ArgumentError, "contains_many :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
             instance_variable_get("@#{clean_name}") || \
               instance_variable_set("@#{clean_name}", \
                 if ((c = child(config)) && c.respond_to?(:collect))
                   c.collect do |item|
-                    config[:class].constantize.new(item) rescue item
+                    klass.new(item) rescue item
                   end
                 else
                   c

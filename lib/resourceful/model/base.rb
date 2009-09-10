@@ -9,6 +9,9 @@ module Resourceful
       end
       
       @@namespaces = [""]
+      def self.add_namespace(ns)
+        @@namespaces.unshift(ns)
+      end
       def self.get_namespaced_klass(class_name)
         klass = nil
         @@namespaces.each do |ns|
