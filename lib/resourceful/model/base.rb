@@ -9,6 +9,9 @@ module Resourceful
       end
       
       @@namespaces = [""]
+      def self.namespaces
+        @@namespaces.dup
+      end
       def self.add_namespace(ns)
         @@namespaces.unshift(ns)
       end
