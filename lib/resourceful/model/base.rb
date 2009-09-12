@@ -1,7 +1,10 @@
+require 'resourceful/model/attribute_types'
+
 module Resourceful
   module Model
 
     class Base
+      include Resourceful::Model::AttributeTypes
       
       @@agent ||= {}
       def self.agent(&block)
@@ -92,24 +95,7 @@ module Resourceful
         add_to_attributes(name.to_s)
         config ||= {}
         config[:path] ||= clean_name
-        content_method = case type.to_sym
-        when :string
-          'to_s'
-        when :integer
-          'to_i'
-        when :float
-          'to_f'
-        when :currency
-          'from_currency_to_f'
-        when :date
-          'to_date'
-        when :datetime
-          'to_datetime'
-        when :boolean
-          'to_resourceful_boolean'
-        else 
-          'to_s'
-        end
+        content_method = attribute_type_to_method(type)
         # method to get the raw attribute variable data (not intended to be overridden)
         define_method("_#{clean_name}") do
           fetch_attribute(clean_name, config, content_method)
