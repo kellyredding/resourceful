@@ -30,7 +30,7 @@ module Resourceful
         
         def findable_search
           # defaults to non namespaced downcased name of the class
-          self.name.downcase.to_s.gsub(/^.*::/, '')
+          self.name.demodulize.underscore.to_s.gsub(/^.*::/, '')
         end
         
       end

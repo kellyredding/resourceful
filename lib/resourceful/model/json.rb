@@ -14,9 +14,7 @@ module Resourceful
           :force => force,
           :on_response => block
         }
-        result = super(path, opts)
-        hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
-        new(!hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value) ? result.get_value(hsh_keys) : result)
+        new(get_result_data(super(path, opts), search))
       end
       def self.get_collection(path, params, search=nil, force=false, &block)
         opts = {
@@ -25,9 +23,8 @@ module Resourceful
           :force => force,
           :on_response => block
         }
-        hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
         super(path, opts) do |data|
-          data.collect{|item| !hsh_keys.nil? && !hsh_keys.empty? && item.respond_to?(:get_value) ? item.get_value(hsh_keys) : item}
+          data.collect {|item| get_result_data(item, search) }
         end
       end
 
@@ -37,6 +34,11 @@ module Resourceful
       end
       
       protected
+      
+      def self.get_result_data(result, search)
+        hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
+        result_data = !hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value) ? result.get_value(hsh_keys) || result : result
+      end
       
       def self.format
         Resourceful::Resource::Json.to_s

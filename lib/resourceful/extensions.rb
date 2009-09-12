@@ -81,6 +81,36 @@ module Resourceful
           end
         end
       end
+
+      unless "".respond_to?(:camelize)
+        #   "active_record/errors".camelize         # => "ActiveRecord::Errors"
+        def camelize(first_letter_in_uppercase = true)
+          if first_letter_in_uppercase
+            self.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
+          else
+            self[0..0].downcase + camelize(self)[1..-1]
+          end
+        end
+        
+      end
+      
+      unless "".respond_to?(:underscore)
+        #   "ActiveRecord::Errors".underscore # => active_record/errors
+        def underscore
+          self.to_s.gsub(/::/, '/').
+            gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+            gsub(/([a-z\d])([A-Z])/,'\1_\2').
+            tr("-", "_").
+            downcase
+        end
+      end
+      
+      unless "".respond_to?(:demodulize)
+        #   "ActiveRecord::CoreExtensions::String::Inflections".demodulize # => "Inflections"
+        def demodulize
+          self.to_s.gsub(/^.*::/, '')
+        end
+      end
       
     end
   end

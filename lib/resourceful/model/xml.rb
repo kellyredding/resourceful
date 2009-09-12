@@ -14,7 +14,8 @@ module Resourceful
           :force => force,
           :on_response => block
         }
-        new(super(path, opts).search(search))
+        data = super(path, opts)
+        new(data.search(search) || data)
       end
       def self.get_collection(path, params, search, force=false, &block)
         opts = {
@@ -24,7 +25,7 @@ module Resourceful
           :on_response => block
         }
         super(path, opts) do |data|
-          data.search(search)
+          data.search(search) || data
         end
       end
 
