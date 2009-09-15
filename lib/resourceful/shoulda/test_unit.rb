@@ -22,6 +22,7 @@ module Resourceful
       
       def should_be_findable(index)
         should_have_class_methods :find
+        should_have_instance_methods :save, :destroy
         klass = described_type
         should "have '#{index}' as a findable index" do
           assert_equal index, klass.findable_index, "#{klass} findable index is not '#{index}'"

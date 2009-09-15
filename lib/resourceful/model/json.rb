@@ -35,6 +35,10 @@ module Resourceful
       
       protected
       
+      def push_data(verb, path, opts, data, search=nil)
+        self.class.get_result_data(super(verb, path, opts, data), search)
+      end
+      
       def self.get_result_data(result, search)
         hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
         result_data = !hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value) ? result.get_value(hsh_keys) || result : result

@@ -36,6 +36,11 @@ module Resourceful
       
       protected
       
+      def push_data(verb, path, opts, data, search="")
+        result = super(verb, path, opts, data)
+        result.search(search) || result
+      end
+      
       def self.format
         Resourceful::Resource::Xml.to_s
       end
