@@ -41,7 +41,7 @@ module Resourceful
       end
         
       def self.build(json_str)
-        JSON.parse(json_str.to_s)
+        !json_str.nil? && !json_str.to_s.empty? && (json_str.to_s != 'null') ? JSON.parse(json_str.to_s) : nil
       end
         
     end
