@@ -22,7 +22,7 @@ module Resourceful
         klass = nil
         @@namespaces.each do |ns|
           begin
-            klass = "#{ns}::#{class_name}".constantize
+            klass = "#{ns}::#{class_name}".resourceful_constantize
             break;
           rescue Exception => err
           end

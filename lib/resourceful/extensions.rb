@@ -56,26 +56,26 @@ module Resourceful
         end
       end
       
-      unless "".respond_to?(:constantize) 
+      unless "".respond_to?(:resourceful_constantize) 
         if Module.method(:const_get).arity == 1
-          def constantize #:nodoc:
+          def resourceful_constantize #:nodoc:
             names = self.split('::')
             names.shift if names.empty? || names.first.empty?
 
             constant = ::Object
             names.each do |name|
-              constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+              constant = constant.const_defined?(name) ? constant.const_get(name) : raise(NameError.new("uninitialized constant #{self}"))
             end
             constant
           end
         else # Ruby 1.9 version
-          def constantize #:nodoc:
+          def resourceful_constantize #:nodoc:
             names = self.split('::')
             names.shift if names.empty? || names.first.empty?
 
             constant = ::Object
             names.each do |name|
-              constant = constant.const_get(name, false) || constant.const_missing(name)
+              constant = constant.const_get(name, false) || raise(NameError.new("uninitialized constant #{self}"))
             end
             constant
           end

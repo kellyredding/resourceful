@@ -1,13 +1,13 @@
 When /^I load the "([^\"]*)" widget model "([^\"]*)"$/ do |klass, id|
-  @result = "RestClientWidget#{klass}".constantize.find(id)
+  @result = "RestClientWidget#{klass}".resourceful_constantize.find(id)
 end
 
 When /^I create a new "([^\"]*)" widget model$/ do |klass|
-  @result = "RestClientWidget#{klass}".constantize.new
+  @result = "RestClientWidget#{klass}".resourceful_constantize.new
 end
 
 When /^I load the "([^\"]*)" widgets collection$/ do |klass|
-  @result = "RestClientWidget#{klass}".constantize.find(:all)
+  @result = "RestClientWidget#{klass}".resourceful_constantize.find(:all)
 end
 
 When /^I update "([^\"]*)" to be "([^\"]*)"$/ do |a, v|
