@@ -1,6 +1,6 @@
 module Resourceful
   module Model
-    module ExternalAssociations
+    module ActiverecordAssociations
       
       module ClassMethods
 
