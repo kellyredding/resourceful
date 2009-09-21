@@ -81,6 +81,10 @@ module Resourceful
         yield attributes(true)
         @data = nil
       end
+
+      def self.cleanup_name(name)
+        name.to_s.gsub(/\W/,'')
+      end
       
       protected
       
@@ -110,10 +114,6 @@ module Resourceful
         end
       end
 
-      def self.cleanup_name(name)
-        name.to_s.gsub(/\W/,'')
-      end
-      
       private
       
       def fetch_attribute(clean_name, config, content_method)
