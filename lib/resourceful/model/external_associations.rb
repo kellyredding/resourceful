@@ -15,7 +15,7 @@ module Resourceful
           config ||= {}
           raise ArgumentError, "has_many requires a :class option to be specified" unless config[:class]
           class_name = config.delete(:class).to_s
-          find_method_name = config.delete(:method).to_s || 'find'
+          find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || true
           define_method(name) do
             klass = self.class.get_namespaced_klass(class_name)
@@ -39,7 +39,7 @@ module Resourceful
           raise ArgumentError, "belongs_to requires a :class option to be specified" unless config[:class]
           class_name = config.delete(:class).to_s
           foreign_key = config.delete(:foreign_key) || "#{clean_name}_id"
-          find_method_name = config.delete(:method).to_s || 'find'
+          find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || true
           define_method(name) do
             klass = self.class.get_namespaced_klass(class_name)
