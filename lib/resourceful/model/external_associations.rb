@@ -16,7 +16,7 @@ module Resourceful
           raise ArgumentError, "has_many requires a :class option to be specified" unless config[:class]
           class_name = config.delete(:class).to_s
           find_method_name = (config.delete(:method) || 'find').to_s
-          force = config.delete(:force) || true
+          force = config.delete(:force) || false
           define_method(name) do
             klass = self.class.get_namespaced_klass(class_name)
             raise ArgumentError, "has_many :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
@@ -40,7 +40,7 @@ module Resourceful
           class_name = config.delete(:class).to_s
           foreign_key = config.delete(:foreign_key) || "#{clean_name}_id"
           find_method_name = (config.delete(:method) || 'find').to_s
-          force = config.delete(:force) || true
+          force = config.delete(:force) || false
           define_method(name) do
             klass = self.class.get_namespaced_klass(class_name)
             raise ArgumentError, "belongs_to :class '#{class_name}' is not defined in any given namespaces" if klass.nil?

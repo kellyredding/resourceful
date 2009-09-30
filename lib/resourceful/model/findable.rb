@@ -4,7 +4,7 @@ module Resourceful
       
       module ClassMethods
 
-        def find(id, opts={}, force=true)
+        def find(id, opts={}, force=false)
           opts ||= {}
           opts = findable_default_opts.merge(opts) if respond_to?(:findable_default_opts)
           case id

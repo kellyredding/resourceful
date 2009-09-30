@@ -16,7 +16,7 @@ module Resourceful
           raise ArgumentError, "has_many_resourceful requires a :class_name option to be specified" unless config[:class_name]
           class_name = config.delete(:class_name).to_s
           find_method_name = (config.delete(:method) || 'find').to_s
-          force = config.delete(:force) || true
+          force = config.delete(:force) || false
           define_method(name) do
             klass = class_name.resourceful_constantize
             raise ArgumentError, "has_many_resourceful :class_name '#{class_name}' is not defined" if klass.nil?
@@ -40,7 +40,7 @@ module Resourceful
           class_name = config.delete(:class_name).to_s
           foreign_key = config.delete(:foreign_key) || "#{clean_name}_id"
           find_method_name = (config.delete(:method) || 'find').to_s
-          force = config.delete(:force) || true
+          force = config.delete(:force) || false
           define_method(name) do
             klass = class_name.resourceful_constantize
             raise ArgumentError, "belongs_to_resourceful :class_name '#{class_name}' is not defined" if klass.nil?
