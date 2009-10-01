@@ -7,7 +7,7 @@ require 'lib/resourceful/version'
 task :default => :test
 
 spec = Gem::Specification.new do |s|
-  s.name             = 'resourceful'
+  s.name             = 'kelredd-resourceful'
   s.version          = Resourceful::Version.to_s
   s.has_rdoc         = true
   s.extra_rdoc_files = %w(README.rdoc)
