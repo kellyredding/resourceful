@@ -17,7 +17,7 @@ module Resourceful
           class_name = config.delete(:class).to_s
           find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || false
-          define_method(name) do
+          define_method(name, reload=false) do
             klass = self.class.get_namespaced_klass(class_name)
             raise ArgumentError, "has_many :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
             unless klass.respond_to?(find_method_name)
@@ -26,10 +26,11 @@ module Resourceful
             fk = config.delete(:foreign_key) || "#{self.class.name.demodulize.underscore}_id"
             fk_method = config.delete(:foreign_key_method) || 'id'
             config[fk] = self.send(fk_method)
-            instance_variable_get("@#{clean_name}") || \
-              instance_variable_set("@#{clean_name}", \
-                klass.send(find_method_name, :all, config, force)
-              )
+            if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
+              instance_variable_set("@#{clean_name}", klass.send(find_method_name, :all, config, force))
+            else
+              assoc_val
+            end
           end
         end
 
@@ -41,7 +42,7 @@ module Resourceful
           foreign_key = config.delete(:foreign_key) || "#{clean_name}_id"
           find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || false
-          define_method(name) do
+          define_method(name, reload=false) do
             klass = self.class.get_namespaced_klass(class_name)
             raise ArgumentError, "belongs_to :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
             unless self.respond_to?(foreign_key)
@@ -54,10 +55,11 @@ module Resourceful
             if fk.nil? || (fk.respond_to?('empty?') && fk.empty?)
               nil
             else
-              instance_variable_get("@#{clean_name}") || \
-                instance_variable_set("@#{clean_name}", \
-                  klass.send(find_method_name, fk, config, force)
-                )
+              if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
+                instance_variable_set("@#{clean_name}", klass.send(find_method_name, fk, config, force))
+              else
+                assoc_val
+              end
             end
           end
         end
