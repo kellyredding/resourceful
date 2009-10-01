@@ -29,6 +29,7 @@ module Resourceful
       
       def write(key, value)
         @store[key] = {:value => value, :expires => Time.now.to_i + EXPIRY_SECS}
+        value
       end
       
       private
