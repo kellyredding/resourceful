@@ -3,7 +3,7 @@ module Resourceful
     
     MAJOR = 0
     MINOR = 7
-    TINY  = 16
+    TINY  = 20
     
     def self.to_s # :nodoc:
       [MAJOR, MINOR, TINY].join('.')
