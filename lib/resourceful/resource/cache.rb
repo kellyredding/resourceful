@@ -4,6 +4,8 @@ module Resourceful
 
       attr_reader :store
       
+      EXPIRY_SECS = 30
+      
       def self.key(host, verb, resource)
         "#{host}_#{verb}_#{resource}"
       end
@@ -21,11 +23,19 @@ module Resourceful
       end
       
       def read(key)
-        @store[key]
+        entry = @store[key]
+        expired?(entry) ? nil : entry[:value]
       end
       
       def write(key, value)
-        @store[key] = value
+        @store[key] = {:value => value, :expires => Time.now.to_i + EXPIRY_SECS}
+      end
+      
+      private
+      
+      def expired?(entry)
+        (entry.nil? || !entry.kind_of?(::Hash) || entry[:expires] < Time.now.to_i)
+        
       end
 
     end
