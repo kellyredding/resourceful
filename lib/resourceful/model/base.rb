@@ -105,7 +105,9 @@ module Resourceful
           fetch_attribute(clean_name, config, content_method)
         end
         # method to read the attribute value (intended to be overridden when necessary)
-        define_method(name) do
+        define_method(name) do |*args|
+          reload = args.first || false
+          instance_variable_set("@#{clean_name}", nil) if reload
           fetch_attribute(clean_name, config, content_method)
         end
         # method to write the attribute value

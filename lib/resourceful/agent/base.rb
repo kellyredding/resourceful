@@ -5,14 +5,14 @@ module Resourceful
   module Agent
     class Base
       
-      attr_reader :logger, :cache
+      attr_reader :logger, :cache, :expiration, :log_prefix
 
-      ATTRS = [:host, :user, :password]
+      ATTRS = [:host, :user, :password, :expiration, :log_prefix]
       ATTRS.each { |a| attr_reader a }
       
       def initialize(args={})
         ATTRS.each { |a| instance_variable_set("@#{a.to_s}", args.delete(a)) }
-        @cache = Resourceful::Resource::Cache.new
+        @cache = Resourceful::Resource::Cache.new @expiration
         @logger = Log4r::Logger.new('[Resourceful]')
         @logger.add(Log4r::StdoutOutputter.new('console'))
       end
@@ -61,7 +61,7 @@ module Resourceful
       end
       
       def log(msg, level = :info) # :nodoc:
-        @logger.send(level.to_s, msg) if msg
+        @logger.send(level.to_s, "#{"[#{@log_prefix.to_s}]" if @log_prefix} #{msg}") if msg
       end
       
       def log=(file)

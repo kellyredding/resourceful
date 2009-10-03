@@ -47,7 +47,18 @@ So it's all about the models, right.  So you have this data resource on the web:
  
 == Cacheing
 
-# TODO: talk about caching
+Resourceful provides resource caching by default, both at the model level and at the agent level.
+
+=== Model Caching
+
+Model caching refers to using the instance of the model to store attribute and association values.  Resourceful, by default, caches all attribute values and associations in the model instance.  Both attribute values and association values can be "reloaded" by passing true as a single parameter to the attribute or association method.  Please note:
+ * For attribute values, "reloading" simply means parsing the value from the existing raw agent data.  The resource is not fetched via the web for attribute reloading.
+ * For associations, "reloading" means calling out for the resource and fetching it from the web.  This bypasses any agent caching and forces the resource data to be downloaded.
+ 
+=== Agent Caching
+
+Agent caching refers to using a built in cache to store web resource responses for future access.  Resourceful, by default, caches all web requests made via the agents.  Resource responses are cached in memory, based on a unique key, and expire, by default, after 60 seconds.  Custom expiration periods can be specified.  This improves performance when repetitively accessing the same resource, while ensuring the resource does not become stale.  Caching can be bypassed on any request by forcing data download using the :force => true option in agent or model data access methods.
+ * Note: all cached requests will be prepended with "[CACHE]" in resource agent logs
  
 == Logging
 
@@ -56,7 +67,6 @@ Resourceful provides resource agent logging for you by default.  Log information
     @mechanize ||= Resourceful::Agent::Mechanize.new(:host => @host, :agent_alias => @agent_alias, :verbose => @verbose) do
       @log_file ? File.expand_path(@log_file) : nil
     end
-
 
 == Examples
 

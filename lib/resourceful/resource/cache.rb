@@ -2,15 +2,16 @@ module Resourceful
   module Resource
     class Cache
 
-      attr_reader :store
+      attr_reader :store, :expiration
       
-      EXPIRY_SECS = 30
+      EXPIRY_SECS = 60
       
       def self.key(host, verb, resource)
         "#{host}_#{verb}_#{resource}"
       end
 
-      def initialize
+      def initialize(expiration=EXPIRY_SECS)
+        @expiration = (expiration && expiration.kind_of?(::Fixnum)) ? expiration : EXPIRY_SECS
         @store = {}
       end
 
@@ -28,7 +29,7 @@ module Resourceful
       end
       
       def write(key, value)
-        @store[key] = {:value => value, :expires => Time.now.to_i + EXPIRY_SECS}
+        @store[key] = {:value => value, :expires => Time.now.to_i + @expiration}
         value
       end
       
