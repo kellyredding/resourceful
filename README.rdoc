@@ -51,7 +51,12 @@ So it's all about the models, right.  So you have this data resource on the web:
  
 == Logging
 
-# TODO: talk about logging features
+Resourceful provides resource agent logging for you by default.  Log information is written to the console for confirmation of resource access.  In addition, you can specify a file to log to by implementing a block that returns the path of a file to log to, such as:
+
+    @mechanize ||= Resourceful::Agent::Mechanize.new(:host => @host, :agent_alias => @agent_alias, :verbose => @verbose) do
+      @log_file ? File.expand_path(@log_file) : nil
+    end
+
 
 == Examples
 
