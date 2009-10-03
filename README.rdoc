@@ -2,27 +2,31 @@
 
 == Description
 
-A ruby gem to abstract web resource handling.  You configure the server, resource format, etc... and
-the gem will provide interactions with that resource in a restful manner, with data returned in a 
-de-serialized object format.
+A ruby gem to abstract web resource handling.
+
+The key to resourceful is being able to interact with web resources using custom defined objects instead of the raw data.  Unlike ActiveResource, Resourceful needs no rigid restful API backing its models.  All you need is data in either JSON or XML (or HTML), and be able to creatively define models from that data.
 
 The supported formats are:
  * JSON (objects returned as Ruby Hash)
  * XML (objects returned as Nokogiri Xml object)
+ 
+Resourceful uses agents to fetch and push data to and from web resources.  Supported agents are:
+ * rest_client: great for interacting with Restful resources
+ * mechanize: great for interacting with raw resources, or secured resources (and for screen scraping raw html)
 
 == Installation
 
-    sudo gem install kelredd-resourceful --source http://gems.github.com
+    sudo gem install kelredd-resourceful --source http://gemcutter.org
     
 == Dependencies
 
  * nokogiri (xml resource format handling)
  * json (json resource format handling)
- * rest_client (rest web resource access)
+ * rest_client (restful web resource access agent)
+ * mechanize (more raw web resource access agent; access secured resources)
  * log4r (for resource interaction logging)
- * kelredd-useful (some nice ruby helpers)
 
-== Usage
+== Basic Usage
 
     # Single host resource handling
     require 'resourceful'
@@ -31,11 +35,34 @@ The supported formats are:
     Resourceful::Resource.get '/widgets', :format => 'json'  # specify explicit format
     Resourceful::Resource.get '/widgets.json'                # or, imply format from resource request
     
-    # TODO: extend to create Resource instances that have per instance host, path, format settings
+== Defining Models
+
+So it's all about the models, right.  So you have this data resource on the web: a JSON API, an XML feed, an old crappy HTML page, a secured page with personal data you want to access.  You start noticing attributes and relationships in this data - it's time to define some models.  Enter resourceful.  Resourceful gives you fancy pants ways to define and test some models, without bothering with all the kruft of accessing those resources via the web.  Check it:
+
+# TODO: show examples of
+ * base access stuff
+ * defining attributes
+ * defining relationships
+ * testing the model
+ 
+== Cacheing
+
+# TODO: talk about caching
+ 
+== Logging
+
+# TODO: talk about logging features
+
+== Examples
+
+# TODO: add in examples:
+  * Restful JSON / XML resources
+  * Resourceful external associations
+  * Using associations with non resourceful ruby class (such as an ActiveRecord model)
+  * Screen scraping example (using mechanize to access a secured resource)
     
-== Testing
-A suite of cucumber features are available for you to run as an acceptance test.  You should look to the features 
-for additional documentation and usage scenarios.  To run the features:
+== Testing the Resourceful gem
+A suite of cucumber features are available for you to run as acceptance tests.  You should look to the features for additional documentation and usage scenarios.  To run the features:
 
     # make sure you have these gems
     $ sudo gem install cucumber
