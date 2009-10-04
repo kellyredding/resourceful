@@ -1,9 +1,6 @@
 require 'rubygems'
 require 'fakeweb'
 
-require File.join(File.dirname(__FILE__), 'widget.rb')
-
-WIDGETS_HOST = "http://widgets.local"
 WIDGETS_ALL_XML = %{<?xml version="1.0" encoding="UTF-8"?>
   <widgets type="array">
     <widget>

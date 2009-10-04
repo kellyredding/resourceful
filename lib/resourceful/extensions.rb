@@ -38,7 +38,7 @@ module Resourceful
         end
       end
 
-      unless "".respond_to?(:to_datetime) 
+      unless "".respond_to?(:to_date) 
         def to_date
           ::Date.civil(*::Date._parse(self, false).values_at(:year, :mon, :mday).map { |arg| arg || 0 }) rescue nil
         end

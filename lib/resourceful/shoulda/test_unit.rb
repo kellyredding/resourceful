@@ -52,10 +52,11 @@ module Resourceful
         should_have_instance_methods clean_name
         should_have_resourceful_association_collection(name, opts)
       end
-      
-      
-      
-      # Helpers
+    
+
+
+
+      private  # Helpers ***************************************
       
       def should_have_resourceful_typed_attribute(name, type)
         if type

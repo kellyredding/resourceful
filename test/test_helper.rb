@@ -2,14 +2,20 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
+require 'activesupport'
 require 'test/unit'
 require 'shoulda'
 
 lib_path = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 require 'resourceful'
+require 'resourceful/shoulda'
 
 # Setup fakeweb objects for testing purposes
+
+WIDGETS_HOST = "http://widgets.local"
+BLOG_HOST = "http://blog-example.local"
+module Blog; end
 
 Dir[File.join(File.dirname(__FILE__), "support" ,"*.rb")].each do |file|
   require file

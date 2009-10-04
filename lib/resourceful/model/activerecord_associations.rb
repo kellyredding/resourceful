@@ -28,7 +28,7 @@ module Resourceful
             fk_method = config.delete(:foreign_key_method) || 'id'
             config[fk] = self.send(fk_method)
             if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-              instance_variable_set("@#{clean_name}", klass.send(find_method_name, :all, config, force))
+              instance_variable_set("@#{clean_name}", klass.send(find_method_name, :all, config, reload || force))
             else
               assoc_val
             end
@@ -58,7 +58,7 @@ module Resourceful
               nil
             else
               if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-                instance_variable_set("@#{clean_name}", klass.send(find_method_name, fk, config, force))
+                instance_variable_set("@#{clean_name}", klass.send(find_method_name, fk, config, reload || force))
               else
                 assoc_val
               end
