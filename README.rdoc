@@ -7,12 +7,12 @@ A ruby gem to abstract web resource handling.
 The key to resourceful is being able to interact with web resources using custom defined objects instead of the raw data.  Unlike ActiveResource, Resourceful needs no rigid restful API backing its models.  All you need is data in either JSON or XML (or HTML), and be able to creatively define models from that data.
 
 The supported formats are:
- * JSON (objects returned as Ruby Hash)
- * XML (objects returned as Nokogiri Xml object)
+* JSON (objects returned as Ruby Hash)
+* XML (objects returned as Nokogiri Xml object)
  
 Resourceful uses agents to fetch and push data to and from web resources.  Supported agents are:
- * rest_client: great for interacting with Restful resources
- * mechanize: great for interacting with raw resources, or secured resources (and for screen scraping raw html)
+* rest_client: great for interacting with Restful resources
+* mechanize: great for interacting with raw resources, or secured resources (and for screen scraping raw html)
 
 == Installation
 
@@ -20,11 +20,11 @@ Resourceful uses agents to fetch and push data to and from web resources.  Suppo
     
 == Dependencies
 
- * nokogiri (xml resource format handling)
- * json (json resource format handling)
- * rest_client (restful web resource access agent)
- * mechanize (more raw web resource access agent; access secured resources)
- * log4r (for resource interaction logging)
+* nokogiri (xml resource format handling)
+* json (json resource format handling)
+* rest_client (restful web resource access agent)
+* mechanize (more raw web resource access agent; access secured resources)
+* log4r (for resource interaction logging)
 
 == Basic Usage
 
@@ -40,25 +40,25 @@ Resourceful uses agents to fetch and push data to and from web resources.  Suppo
 So it's all about the models, right.  So you have this data resource on the web: a JSON API, an XML feed, an old crappy HTML page, a secured page with personal data you want to access.  You start noticing attributes and relationships in this data - it's time to define some models.  Enter resourceful.  Resourceful gives you fancy pants ways to define and test some models, without bothering with all the kruft of accessing those resources via the web.  Check it:
 
 # TODO: show examples of
- * base access stuff
- * defining attributes
- * defining relationships
- * testing the model
+* base access stuff
+* defining attributes
+* defining relationships
+* testing the model
  
-== Cacheing
+== Caching
 
 Resourceful provides resource caching by default, both at the model level and at the agent level.
 
 === Model Caching
 
 Model caching refers to using the instance of the model to store attribute and association values.  Resourceful, by default, caches all attribute values and associations in the model instance.  Both attribute values and association values can be "reloaded" by passing true as a single parameter to the attribute or association method.  Please note:
- * For attribute values, "reloading" simply means parsing the value from the existing raw agent data.  The resource is not fetched via the web for attribute reloading.
- * For associations, "reloading" means calling out for the resource and fetching it from the web.  This bypasses any agent caching and forces the resource data to be downloaded.
+* For attribute values, "reloading" simply means parsing the value from the existing raw agent data.  The resource is not fetched via the web for attribute reloading.
+* For associations, "reloading" means calling out for the resource and fetching it from the web.  This bypasses any agent caching and forces the resource data to be downloaded.
  
 === Agent Caching
 
 Agent caching refers to using a built in cache to store web resource responses for future access.  Resourceful, by default, caches all web requests made via the agents.  Resource responses are cached in memory, based on a unique key, and expire, by default, after 60 seconds.  Custom expiration periods can be specified.  This improves performance when repetitively accessing the same resource, while ensuring the resource does not become stale.  Caching can be bypassed on any request by forcing data download using the :force => true option in agent or model data access methods.
- * Note: all cached requests will be prepended with "[CACHE]" in resource agent logs
+* Note: all cached requests will be prepended with "[CACHE]" in resource agent logs
  
 == Logging
 
@@ -71,10 +71,10 @@ Resourceful provides resource agent logging for you by default.  Log information
 == Examples
 
 # TODO: add in examples:
-  * Restful JSON / XML resources
-  * Resourceful external associations
-  * Using associations with non resourceful ruby class (such as an ActiveRecord model)
-  * Screen scraping example (using mechanize to access a secured resource)
+* Restful JSON / XML resources
+* Resourceful external associations
+* Using associations with non resourceful ruby class (such as an ActiveRecord model)
+* Screen scraping example (using mechanize to access a secured resource)
     
 == Testing the Resourceful gem
 A suite of cucumber features are available for you to run as acceptance tests.  You should look to the features for additional documentation and usage scenarios.  To run the features:
