@@ -10,5 +10,5 @@ PUBLISHERS_1_JSON = %{
 }
 
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/publishers.json", :body => PUBLISHERS_ALL_JSON)
-FakeWeb.register_uri(:get, "#{BLOG_HOST}/publishers.json?id=1%2C2%2C3%2C4%2C5", :body => PUBLISHERS_ALL_JSON)
+FakeWeb.register_uri(:get, "#{BLOG_HOST}/publishers.json?id[]=1&id[]=2&id[]=3&id[]=4&id[]=5", :body => PUBLISHERS_ALL_JSON)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/publishers/1.json", :body => PUBLISHERS_1_JSON)

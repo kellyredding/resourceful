@@ -82,6 +82,6 @@ POSTS_2_XML = %{<?xml version="1.0" encoding="UTF-8"?>
 
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml", :body => POSTS_ALL_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml?author_id=1", :body => POSTS_ALL_XML)
-FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml?author_id=1%2C2%2C3%2C4%2C5", :body => POSTS_ALL_XML)
+FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml?author_id[]=1&author_id[]=2&author_id[]=3&author_id[]=4&author_id[]=5", :body => POSTS_ALL_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts/1.xml", :body => POSTS_1_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts/2.xml", :body => POSTS_2_XML)
