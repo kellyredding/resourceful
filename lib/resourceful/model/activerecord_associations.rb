@@ -15,6 +15,13 @@ module Resourceful
           force = config.delete(:force) || false
           foreign_key_name = config.delete(:foreign_key) || "#{self.name.demodulize.underscore}_id"
           foreign_key_method = config.delete(:foreign_key_method) || 'id'
+          Resourceful.add_to_associations(self.name, clean_name, {
+            :type => :has_many,
+            :class_name => class_name,
+            :foreign_key_name => foreign_key_name,
+            :foreign_key_method => foreign_key_method,
+            :find_method_name => find_method_name
+          })
           define_method(name) do |*args|
             reload = args.first || false
             if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
@@ -40,6 +47,13 @@ module Resourceful
           force = config.delete(:force) || false
           foreign_key_name = config.delete(:foreign_key_name) || 'id'
           foreign_key_method = config.delete(:foreign_key) || "#{clean_name}_id"
+          Resourceful.add_to_associations(self.name, clean_name, {
+            :type => :belongs_to,
+            :class_name => class_name,
+            :foreign_key_name => foreign_key_name,
+            :foreign_key_method => foreign_key_method,
+            :find_method_name => find_method_name
+          })
           define_method(name) do |*args|
             reload = args.first || false
             if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
