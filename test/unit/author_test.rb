@@ -27,8 +27,10 @@ class Blog::AuthorTest < Test::Unit::TestCase
     
     should_have_resourceful_attribute :id,   :type => 'integer'
     should_have_resourceful_attribute :name, :type => 'string'
+    should_have_resourceful_attribute :publisher_id, :type => 'integer'
     
     should_resourcefully_have_many :posts, :class => "Post"
+    should_resourcefully_belong_to :publisher, :class => "Publisher"
     should_resourcefully_contain_one :address, :class => "Address"
     
     should "cache and reload attributes" do

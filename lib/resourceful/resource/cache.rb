@@ -1,5 +1,11 @@
 module Resourceful
   module Resource
+    
+    # The idea here is to put Resourceful into an eager loading "mode" while yielding to a block
+    # => while in this mode, resourceful models will try to load and cache data in batches
+    #def self.eager_load
+    #  @@
+    #end
     class Cache
 
       attr_reader :store, :expiration

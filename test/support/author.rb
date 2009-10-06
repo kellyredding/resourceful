@@ -2,7 +2,7 @@ class Blog::Author < Resourceful::Model::Json
   
   add_namespace "Blog"
   agent do
-    Resourceful::Agent::RestClient.new(:host => BLOG_HOST, :log_prefix => "Blog::Post")
+    Resourceful::Agent::RestClient.new(:host => BLOG_HOST, :log_prefix => "Blog::Author")
   end
   
   include Resourceful::Model::Findable
@@ -15,9 +15,11 @@ class Blog::Author < Resourceful::Model::Json
   
   attribute :id, :integer
   attribute :name, :string
+  attribute :publisher_id, :integer
   
   include Resourceful::Model::ExternalAssociations  
   has_many :posts, :class => "Post"
+  belongs_to :publisher, :class => "Publisher"
   
   include Resourceful::Model::EmbeddedAssociations
   contains_one :address, :class => "Address"
