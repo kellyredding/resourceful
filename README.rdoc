@@ -42,7 +42,7 @@ So it's all about the models, right.  So you have this data resource on the web:
 # TODO: show examples of
 * base access stuff
 * defining attributes
-* defining relationships
+* defining associations
 * testing the model
  
 == Caching
@@ -71,10 +71,12 @@ Resourceful provides resource agent logging for you by default.  Log information
 == Examples
 
 # TODO: add in examples:
+* Screen scraping example (using mechanize to access a secured resource)
 * Restful JSON / XML resources
 * Resourceful external associations
+* Resourceful embedded associations
 * Using associations with non resourceful ruby class (such as an ActiveRecord model)
-* Screen scraping example (using mechanize to access a secured resource)
+* Association eager loading
     
 == Testing the Resourceful gem
 A suite of cucumber features are available for you to run as acceptance tests.  You should look to the features for additional documentation and usage scenarios.  To run the features:
