@@ -13,7 +13,7 @@ module Resourceful
           class_name = config.delete(:class_name).to_s
           find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || false
-          foreign_key = config.delete(:foreign_key) || "#{self.name.demodulize.underscore}_id"
+          foreign_key_name = config.delete(:foreign_key) || "#{self.name.demodulize.underscore}_id"
           foreign_key_method = config.delete(:foreign_key_method) || 'id'
           define_method(name) do |*args|
             reload = args.first || false
@@ -23,7 +23,7 @@ module Resourceful
               unless klass.respond_to?(find_method_name)
                 raise NotImplementedError, "has_many_resourceful expects #{klass} to implement a Findable method named '#{find_method_name}'"
               end
-              config[foreign_key] = self.send(foreign_key_method)
+              config[foreign_key_name] = self.send(foreign_key_method)
               instance_variable_set("@#{clean_name}", klass.send(find_method_name, :all, config, reload || force))
             else
               assoc_val
@@ -38,19 +38,20 @@ module Resourceful
           class_name = config.delete(:class_name).to_s
           find_method_name = (config.delete(:method) || 'find').to_s
           force = config.delete(:force) || false
-          foreign_key = config.delete(:foreign_key) || "#{clean_name}_id"
+          foreign_key_name = config.delete(:foreign_key_name) || 'id'
+          foreign_key_method = config.delete(:foreign_key) || "#{clean_name}_id"
           define_method(name) do |*args|
             reload = args.first || false
             if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
               klass = class_name.resourceful_constantize
               raise ArgumentError, "belongs_to_resourceful :class_name '#{class_name}' is not defined" if klass.nil?
-              unless self.respond_to?(foreign_key)
-                raise ArgumentError, "belongs_to_resourceful requires a '#{foreign_key}' method defined to return the foreign_key"
+              unless self.respond_to?(foreign_key_method)
+                raise ArgumentError, "belongs_to_resourceful requires a '#{foreign_key_method}' method defined to return the foreign_key"
               end
               unless klass.respond_to?(find_method_name)
                 raise NotImplementedError, "belongs_to_resourceful expects #{klass} to implement a Findable method named '#{find_method_name}'"
               end
-              fk = self.send(foreign_key)
+              fk = self.send(foreign_key_method)
               instance_variable_set("@#{clean_name}", fk.nil? || (fk.respond_to?('empty?') && fk.empty?) ? nil : klass.send(find_method_name, fk, config, reload || force))
             else
               assoc_val

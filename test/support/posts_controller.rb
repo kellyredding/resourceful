@@ -35,6 +35,20 @@ POSTS_ALL_XML = %{<?xml version="1.0" encoding="UTF-8"?>
       <comments type="array">
       </comments>
     </post>
+    <post>
+      <name>Three</name>
+      <id type="integer">3</id>
+      <author-id type="integer">4</author-id>
+      <comments type="array">
+      </comments>
+    </post>
+    <post>
+      <name>Five</name>
+      <id type="integer">4</id>
+      <author-id type="integer">5</author-id>
+      <comments type="array">
+      </comments>
+    </post>
   </posts>
 }
 
@@ -68,5 +82,6 @@ POSTS_2_XML = %{<?xml version="1.0" encoding="UTF-8"?>
 
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml", :body => POSTS_ALL_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml?author_id=1", :body => POSTS_ALL_XML)
+FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts.xml?author_id=1%2C2%2C3%2C4%2C5", :body => POSTS_ALL_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts/1.xml", :body => POSTS_1_XML)
 FakeWeb.register_uri(:get, "#{BLOG_HOST}/posts/2.xml", :body => POSTS_2_XML)

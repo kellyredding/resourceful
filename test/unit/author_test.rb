@@ -19,6 +19,24 @@ class Blog::AuthorTest < Test::Unit::TestCase
     end
   end
   
+  context "all authors eagerly loaded" do
+    setup do
+      @authors = Resourceful.eager_load(Blog::Author.find(:all), [:publisher, :posts])
+    end
+    subject { @authors }
+    
+    should "should have their association instance variables already set" do
+      @authors.each do |author|
+        assert author.instance_variable_defined?("@publisher")
+        assert !author.instance_variable_get("@publisher").nil?
+        p "*** author publisher: #{author.publisher.inspect}"
+        assert author.instance_variable_defined?("@posts")
+        assert !author.instance_variable_get("@posts").nil?
+        p "*** author posts: #{author.posts.inspect}"
+      end
+    end
+  end
+  
   context "an author" do
     setup do
       @author = Blog::Author.find(:first)
