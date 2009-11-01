@@ -24,6 +24,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('rest-client')
   s.add_dependency('mechanize')
   s.add_dependency('log4r')
+  s.add_dependency('kelredd-useful', '>= 0.2.0')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

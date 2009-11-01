@@ -1,3 +1,4 @@
+require 'useful/shoulda_macros/test_unit'
 require 'resourceful/model/base'
 require 'resourceful/extensions'
 
@@ -98,28 +99,6 @@ module Resourceful
           assert klass.get_namespaced_klass(opts[:class]), "a namespaced #{opts[:class]} is not defined"
         end
       end
-      
-      # Ripped from Shoulda::ActiveRecord::Macros
-      def should_have_instance_methods(*methods)
-        get_options!(methods)
-        klass = described_type
-        methods.each do |method|
-          should "respond to instance method ##{method}" do
-            assert_respond_to klass.new, method, "#{klass.name} does not have instance method #{method}"
-          end
-        end
-      end unless Test::Unit::TestCase.method_defined? :should_have_instance_methods
-      
-      # Ripped from Shoulda::ActiveRecord::Macros
-      def should_have_class_methods(*methods)
-        get_options!(methods)
-        klass = described_type
-        methods.each do |method|
-          should "respond to class method ##{method}" do
-            assert_respond_to klass, method, "#{klass.name} does not have class method #{method}"
-          end
-        end
-      end unless Test::Unit::TestCase.method_defined? :should_have_class_methods
       
     end
   end

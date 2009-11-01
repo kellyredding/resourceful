@@ -5,15 +5,15 @@ module Resourceful
       module ClassMethods
         
         ATTRIBUTE_TYPES = {
-          :string   => { :method => 'to_s',                   :kind => ::String   },
-          :text     => { :method => 'to_s',                   :kind => ::String   },
-          :integer  => { :method => 'to_i',                   :kind => ::Fixnum   },
-          :float    => { :method => 'to_f',                   :kind => ::Float    },
-          :currency => { :method => 'from_currency_to_f',     :kind => ::Float    },
-          :date     => { :method => 'to_date',                :kind => ::Date     },
-          :datetime => { :method => 'to_datetime',            :kind => ::DateTime },
-          :boolean  => { :method => 'to_resourceful_boolean', :kind => ::Object   },
-          :other    => { :method => 'to_s',                   :kind => ::String   }
+          :string   => { :method => 'to_s',               :kind => ::String   },
+          :text     => { :method => 'to_s',               :kind => ::String   },
+          :integer  => { :method => 'to_i',               :kind => ::Fixnum   },
+          :float    => { :method => 'to_f',               :kind => ::Float    },
+          :currency => { :method => 'from_currency_to_f', :kind => ::Float    },
+          :date     => { :method => 'to_date',            :kind => ::Date     },
+          :datetime => { :method => 'to_datetime',        :kind => ::DateTime },
+          :boolean  => { :method => 'to_boolean',         :kind => ::Object   },
+          :other    => { :method => 'to_s',               :kind => ::String   }
         }
         
         def attribute_type_to_method(type)

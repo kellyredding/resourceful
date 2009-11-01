@@ -1,4 +1,4 @@
-%w(nokogiri json log4r).each do |lib|
+%w(nokogiri json log4r useful/ruby_extensions).each do |lib|
   require lib
 end
 
