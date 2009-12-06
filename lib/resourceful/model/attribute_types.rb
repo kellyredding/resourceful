@@ -8,7 +8,7 @@ module Resourceful::Model::AttributeTypes
     ATTRIBUTE_TYPES = {
       :string   => { :method => 'to_s',               :kind => ::String   },
       :text     => { :method => 'to_s',               :kind => ::String   },
-      :integer  => { :method => 'to_i',               :kind => ::Fixnum   },
+      :integer  => { :method => 'to_i',               :kind => ::Integer  },
       :float    => { :method => 'to_f',               :kind => ::Float    },
       :currency => { :method => 'from_currency_to_f', :kind => ::Float    },
       :date     => { :method => 'to_date',            :kind => ::Date     },
