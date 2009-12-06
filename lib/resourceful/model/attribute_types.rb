@@ -18,11 +18,17 @@ module Resourceful::Model::AttributeTypes
     }
     
     def attribute_type_to_method(type)
-      (ATTRIBUTE_TYPES.has_key?(type.to_sym) ? ATTRIBUTE_TYPES[type.to_sym] : ATTRIBUTE_TYPES[:other])[:method]
+      get_attribute_type_config(type)[:method]
     end
 
     def attribute_type_to_kind(type)
-      (ATTRIBUTE_TYPES.has_key?(type.to_sym) ? ATTRIBUTE_TYPES[type.to_sym] : ATTRIBUTE_TYPES[:other])[:kind]
+      get_attribute_type_config(type)[:kind]
+    end
+    
+    private
+    
+    def get_attribute_type_config(type)
+      ATTRIBUTE_TYPES.has_key?(type.to_sym) ? ATTRIBUTE_TYPES[type.to_sym] : ATTRIBUTE_TYPES[:other]
     end
 
   end
