@@ -13,6 +13,7 @@ module Resourceful::Model::AttributeTypes
       :currency => { :method => 'from_currency_to_f', :kind => ::Float    },
       :date     => { :method => 'to_date',            :kind => ::Date     },
       :datetime => { :method => 'to_datetime',        :kind => ::DateTime },
+      :time     => { :method => 'to_time_at',         :kind => ::Time     },
       :boolean  => { :method => 'to_boolean',         :kind => ::Object   },
       :other    => { :method => 'to_s',               :kind => ::String   }
     }
