@@ -72,17 +72,22 @@ module Resourceful::Shoulda::TestUnit
   
   def should_have_resourceful_association_item(name, opts)
     klass = described_type
-    should_have_resourceful_association_class(opts)
-    should "return an item that is a kind of #{opts[:class]}" do
+    should_have_resourceful_association_class(name, opts)
+    should "return an item that is of the correct class" do
       if subject && (val = subject.send(name))
-        assert_kind_of klass.get_namespaced_klass(opts[:class]), val, "#{name} should be a kind of #{opts[:class]}"
+        class_name = if !!opts[:polymorphic]
+          val.send("#{name}_type")
+        else
+          opts[:class]
+        end
+        assert_kind_of klass.get_namespaced_klass(class_name), val, "#{name} should be a kind of #{class_name}"
       end
     end
   end
   
   def should_have_resourceful_association_collection(name, opts)
     klass = described_type
-    should_have_resourceful_association_class(opts)
+    should_have_resourceful_association_class(name, opts)
     should "return a collection of items that are a kind of #{opts[:class]}" do
       if subject && (val = subject.send(name))
         assert_kind_of ::Array, val, "#{name} should be a kind of Array"
@@ -93,11 +98,17 @@ module Resourceful::Shoulda::TestUnit
     end
   end
   
-  def should_have_resourceful_association_class(opts)
+  def should_have_resourceful_association_class(name, opts)
+    # TODO: update this for polymorphic
     klass = described_type
     should "have a #{opts[:class]} class specified that is defined" do
-      assert opts[:class], "resourceful associations require a :class option"
-      assert klass.get_namespaced_klass(opts[:class]), "a namespaced #{opts[:class]} is not defined"
+      class_name = if !!opts[:polymorphic]
+        subject.send("#{name}_type")
+      else
+        opts[:class]
+      end
+      assert class_name, "resourceful can't determine the class name from either the :class option or a :polymorphic setting"
+      assert klass.get_namespaced_klass(class_name), "a namespaced #{class_name} is not defined"
     end
   end
   

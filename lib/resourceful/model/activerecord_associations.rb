@@ -42,23 +42,32 @@ module Resourceful::Model::ActiverecordAssociations
     def belongs_to_resourceful(name, config={})
       clean_name = Resourceful::Model::Base.cleanup_name(name)
       config ||= {}
-      raise ArgumentError, "belongs_to_resourceful requires a :class_name option to be specified" unless config[:class_name]
-      class_name = config.delete(:class_name).to_s
+
       find_method_name = (config.delete(:method) || 'find').to_s
       force = config.delete(:force) || false
       foreign_key_name = config.delete(:foreign_key_name) || 'id'
       foreign_key_method = config.delete(:foreign_key) || "#{clean_name}_id"
-      Resourceful.add_to_associations(self.name, clean_name, {
-        :type => :belongs_to,
-        :class_name => class_name,
-        :foreign_key_name => foreign_key_name,
-        :foreign_key_method => foreign_key_method,
-        :find_method_name => find_method_name
-      })
+      
+      if !(polymorphic = !!config.delete(:polymorphic))
+        raise ArgumentError, "belongs_to_resourceful requires a :class_name option to be specified" unless config[:class_name]
+        class_name = config.delete(:class_name).to_s
+        Resourceful.add_to_associations(self.name, clean_name, {
+          :type => :belongs_to,
+          :class_name => class_name,
+          :foreign_key_name => foreign_key_name,
+          :foreign_key_method => foreign_key_method,
+          :find_method_name => find_method_name
+        })
+      end
+      
       define_method(name) do |*args|
         reload = args.first || false
         if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-          klass = class_name.resourceful_constantize
+          klass = if polymorphic
+            self.send("#{clean_name}_type")
+          else
+            class_name
+          end.resourceful_constantize
           raise ArgumentError, "belongs_to_resourceful :class_name '#{class_name}' is not defined" if klass.nil?
           unless self.respond_to?(foreign_key_method)
             raise ArgumentError, "belongs_to_resourceful requires a '#{foreign_key_method}' method defined to return the foreign_key"

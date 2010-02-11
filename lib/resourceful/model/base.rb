@@ -76,7 +76,7 @@ module Resourceful::Model
     def save
       # TODO: I think this is where it is failing if response does not return any data
       # => test it!
-      if response_data = yield attributes(true)
+      if response_data = yield(attributes(true))
         @data = response_data
         reset_attributes
       else

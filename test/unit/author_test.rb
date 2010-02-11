@@ -21,15 +21,12 @@ class Blog::AuthorTest < Test::Unit::TestCase
   
   context "all authors eagerly loaded" do
     setup do
-      @authors = Resourceful.eager_load(Blog::Author.find(:all), [:publisher, :posts])
+      @authors = Resourceful.eager_load(Blog::Author.find(:all), [:posts])
     end
     subject { @authors }
     
     should "should have their association instance variables already set" do
       @authors.each do |author|
-        assert author.instance_variable_defined?("@publisher")
-        assert !author.instance_variable_get("@publisher").nil?
-        p "*** author publisher: #{author.publisher.inspect}"
         assert author.instance_variable_defined?("@posts")
         assert !author.instance_variable_get("@posts").nil?
         p "*** author posts: #{author.posts.inspect}"
@@ -45,10 +42,11 @@ class Blog::AuthorTest < Test::Unit::TestCase
     
     should_have_resourceful_attribute :id,   :type => 'integer'
     should_have_resourceful_attribute :name, :type => 'string'
-    should_have_resourceful_attribute :publisher_id, :type => 'integer'
+    should_have_resourceful_attribute :parent_type, :type => 'string'
+    should_have_resourceful_attribute :parent_id, :type => 'integer'
     
     should_resourcefully_have_many :posts, :class => "Post"
-    should_resourcefully_belong_to :publisher, :class => "Publisher"
+    should_resourcefully_belong_to :parent, :polymorphic => true
     should_resourcefully_contain_one :address, :class => "Address"
     
     should "cache and reload attributes" do

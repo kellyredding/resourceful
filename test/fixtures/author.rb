@@ -15,11 +15,12 @@ class Blog::Author < Resourceful::Model::Json
   
   attribute :id, :integer
   attribute :name, :string
-  attribute :publisher_id, :integer
+  attribute :parent_type, :string
+  attribute :parent_id, :integer
   
   include Resourceful::Model::ExternalAssociations  
+  belongs_to :parent, :polymorphic => true
   has_many :posts, :class => "Post"
-  belongs_to :publisher, :class => "Publisher"
   
   include Resourceful::Model::EmbeddedAssociations
   contains_one :address, :class => "Address"

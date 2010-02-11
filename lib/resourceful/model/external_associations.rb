@@ -42,23 +42,32 @@ module Resourceful::Model::ExternalAssociations
     def belongs_to(name, config={})
       clean_name = cleanup_name(name)
       config ||= {}
-      raise ArgumentError, "belongs_to requires a :class option to be specified" unless config[:class]
-      class_name = config.delete(:class).to_s
+
       find_method_name = (config.delete(:method) || 'find').to_s
       force = config.delete(:force) || false
       foreign_key_name = config.delete(:foreign_key_name) || 'id'
       foreign_key_method = config.delete(:foreign_key) || "#{clean_name}_id"
-      Resourceful.add_to_associations(self.name, clean_name, {
-        :type => :belongs_to,
-        :class_name => class_name,
-        :foreign_key_name => foreign_key_name,
-        :foreign_key_method => foreign_key_method,
-        :find_method_name => find_method_name
-      })
+      
+      if !(polymorphic = !!config.delete(:polymorphic))
+        raise ArgumentError, "belongs_to requires a :class option to be specified" unless config[:class]
+        class_name = config.delete(:class).to_s
+        Resourceful.add_to_associations(self.name, clean_name, {
+          :type => :belongs_to,
+          :class_name => class_name,
+          :foreign_key_name => foreign_key_name,
+          :foreign_key_method => foreign_key_method,
+          :find_method_name => find_method_name
+        })
+      end
+      
       define_method(name) do |*args|
         reload = args.first || false
         if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-          klass = self.class.get_namespaced_klass(class_name)
+          klass = self.class.get_namespaced_klass(if polymorphic
+            self.send("#{clean_name}_type")
+          else
+            class_name
+          end)
           raise ArgumentError, "belongs_to :class '#{class_name}' is not defined in any given namespaces" if klass.nil?
           unless self.respond_to?(foreign_key_method)
             raise ArgumentError, "belongs_to requires a '#{foreign_key_method}' method defined to return the foreign_key"
