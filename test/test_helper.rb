@@ -2,12 +2,18 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'activesupport'
+require 'active_support'
 require 'test/unit'
 require 'shoulda'
 
-lib_path = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+# Add test and lib paths to the $LOAD_PATH
+[ File.dirname(__FILE__),
+  File.join(File.dirname(__FILE__), '..', 'lib')
+].each do |path|
+  full_path = File.expand_path(path)
+  $LOAD_PATH.unshift(full_path) unless $LOAD_PATH.include?(full_path)
+end
+
 require 'resourceful'
 require 'resourceful/shoulda'
 
@@ -17,7 +23,7 @@ WIDGETS_HOST = "http://widgets.local"
 BLOG_HOST = "http://blog-example.local"
 module Blog; end
 
-Dir[File.join(File.dirname(__FILE__), "support" ,"*.rb")].each do |file|
+Dir[File.join(File.dirname(__FILE__), "fixtures" ,"*.rb")].each do |file|
   require file
 end
 

@@ -16,7 +16,7 @@ Resourceful uses agents to fetch and push data to and from web resources.  Suppo
 
 == Installation
 
-    sudo gem install kelredd-resourceful --source http://gemcutter.org
+    gem install kelredd-resourceful
     
 == Dependencies
 
@@ -90,7 +90,7 @@ A suite of cucumber features are available for you to run as acceptance tests.  
 
 == License
 
-Copyright (c) 2009 Kelly Redding
+Copyright (c) 2010 Kelly Redding (mailto:kelly@kelredd.com)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
