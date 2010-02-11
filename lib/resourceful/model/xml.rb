@@ -39,7 +39,11 @@ module Resourceful::Model
     
     def push_data(verb, path, opts, data, search=nil)
       result = super(verb, path, opts, data)
-      search.nil? ? result : (result.search(search) || result)
+      if search.nil?
+        result
+      else
+        result.search(search) || result
+      end
     end
     
     def self.format

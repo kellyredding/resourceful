@@ -42,7 +42,11 @@ module Resourceful::Model
     
     def self.get_result_data(result, search)
       hsh_keys = search.kind_of?(String) ? search.split(/\s+/) : nil
-      result_data = !hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value) ? (result.get_value(hsh_keys) || result) : result
+      if !hsh_keys.nil? && !hsh_keys.empty? && result.respond_to?(:get_value)
+        result.get_value(hsh_keys) || result
+      else
+        result
+      end
     end
     
     def self.format
