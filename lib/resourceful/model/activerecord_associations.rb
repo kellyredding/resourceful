@@ -26,7 +26,7 @@ module Resourceful::Model::ActiverecordAssociations
       define_method(name) do |*args|
         reload = args.first || false
         if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-          klass = class_name.kind_of(::String) ? class_name.resourceful_constantize : class_name
+          klass = class_name.kind_of?(::String) ? class_name.resourceful_constantize : class_name
           raise ArgumentError, "has_many_resourceful :class_name '#{class_name}' is not defined" if klass.nil?
           unless klass.respond_to?(find_method_name)
             raise NotImplementedError, "has_many_resourceful expects #{klass} to implement a Findable method named '#{find_method_name}'"
@@ -63,7 +63,7 @@ module Resourceful::Model::ActiverecordAssociations
       define_method(name) do |*args|
         reload = args.first || false
         if reload || (assoc_val = instance_variable_get("@#{clean_name}")).nil?
-          klass = if class_name.kind_of(::String)
+          klass = if class_name.kind_of?(::String)
             if polymorphic
               self.send("#{clean_name}_type")
             else
