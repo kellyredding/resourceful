@@ -18,7 +18,7 @@ module Resourceful::Extensions::String
 
           constant = ::Object
           names.each do |name|
-            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+            constant = constant.const_defined?(name) ? constant.const_get(name) : raise(NameError.new("uninitialized constant #{self}"))
           end
           constant
         end
@@ -29,7 +29,7 @@ module Resourceful::Extensions::String
 
           constant = ::Object
           names.each do |name|
-            constant = constant.const_get(name, false) || constant.const_missing(name)
+            constant = constant.const_get(name, false) || raise(NameError.new("uninitialized constant #{self}"))
           end
           constant
         end

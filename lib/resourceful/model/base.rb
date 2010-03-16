@@ -21,12 +21,16 @@ module Resourceful::Model
     end
     def self.get_namespaced_klass(class_name)
       klass = nil
-      @@namespaces.each do |ns|
-        begin
-          klass = "#{ns}::#{class_name}".resourceful_constantize
-          break;
-        rescue Exception => err
+      if class_name.kind_of?(::String)
+        @@namespaces.each do |ns|
+          begin
+            klass = "#{ns}::#{class_name}".resourceful_constantize
+            break;
+          rescue Exception => err
+          end
         end
+      else
+        klass = class_name
       end
       klass
     end

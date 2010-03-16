@@ -18,7 +18,7 @@ class Blog::Post < Resourceful::Model::Xml
   attribute :author_id, :integer, :path => 'author-id'
   
   include Resourceful::Model::ExternalAssociations
-  belongs_to :author, :class => "Author"
+  belongs_to :author, :class => Blog::Author
   
   include Resourceful::Model::EmbeddedAssociations
   contains_many :comments, :class => "Comment", :path => "comments/comment"
